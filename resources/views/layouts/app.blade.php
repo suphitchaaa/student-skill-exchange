@@ -18,6 +18,11 @@
                     <a class="nav-link {{ request()->routeIs($dashboardRouteName) ? 'active' : '' }}" href="{{ $dashboardRoute }}">
                         <i class="bi bi-grid-1x2 me-2" aria-hidden="true"></i>ภาพรวม
                     </a>
+                    @if (auth()->user()->role === 'student')
+                        <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">
+                            <i class="bi bi-person-vcard me-2" aria-hidden="true"></i>โปรไฟล์ของฉัน
+                        </a>
+                    @endif
                     <form action="{{ route('logout') }}" method="POST" class="mt-3">
                         @csrf
                         <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start">

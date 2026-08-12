@@ -71,6 +71,29 @@ body {
     width: 2.5rem;
 }
 
+.profile-image,
+.profile-image-placeholder {
+    border: 1px solid var(--campus-border);
+    border-radius: .75rem;
+    height: 9rem;
+    object-fit: cover;
+    width: 9rem;
+}
+
+.profile-image-placeholder {
+    align-items: center;
+    background: var(--campus-sky);
+    color: var(--campus-blue);
+    display: inline-flex;
+    font-size: 3rem;
+    justify-content: center;
+}
+
+.profile-details dt,
+.profile-details dd {
+    margin-bottom: .75rem;
+}
+
 @media (max-width: 767.98px) {
     .app-sidebar {
         min-height: auto;

@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\StudentProfile;
+use App\Models\User;
+
+class StudentProfilePolicy
+{
+    public function view(User $user, StudentProfile $profile): bool
+    {
+        return $user->role === 'student' && $profile->user_id === $user->id;
+    }
+
+    public function update(User $user, StudentProfile $profile): bool
+    {
+        return $this->view($user, $profile);
+    }
+
+    public function delete(User $user, StudentProfile $profile): bool
+    {
+        return $this->view($user, $profile);
+    }
+}
