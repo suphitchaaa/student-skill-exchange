@@ -1,0 +1,65 @@
+# 02 — User Flow
+
+## Guest
+
+`Landing → Register/Login → Authentication → Role Check → Account Status Check → Correct Dashboard`
+
+## First-time Student
+
+`Login → Dashboard → Profile Incomplete Notice → Profile Form → Upload Image → Add Offered Skill → Add Wanted Skill → Ready to Search`
+
+## Profile Image
+
+Upload:
+`Validate → Store New → Update DB`
+- DB fail → Delete New File
+
+Replace:
+`Validate → Store New → Update DB + Commit → Delete Old File`
+- DB fail → Delete New File
+- Delete old fail → Log Defect
+
+Delete:
+`Read Old Path → Clear DB + Commit → Delete Old File`
+- DB fail → Keep File
+- Delete fail → Log Defect
+
+DB และ Filesystem ไม่ใช่ Atomic Transaction เดียวกัน
+
+## Skills
+
+`My Skills → Offered/Wanted Tab → Add/Edit/Delete → Validate Active Skill + Ownership → Save`
+
+## Search
+
+`Search → Name/Skill/Faculty/Year Filter → Active Students Only → Exclude Current User → Results`
+
+Empty State ต้องมีปุ่มล้างตัวกรอง
+
+## Public Profile
+
+`Search Result → Public Profile → View Offered/Wanted Skills → Start Exchange Request`
+
+## Create Exchange Request
+
+`Choose Sender Offered Skill → Choose Receiver Offered Skill → Format → Schedule → Message → Validate → Transaction → Duplicate Pending Guard → Create Pending → Observer → Queue`
+
+## State Flow
+
+- pending → accepted
+- pending → rejected
+- pending → cancelled
+- accepted → completed
+
+## Authorization
+
+- Accept/Reject: Receiver
+- Cancel: Sender
+- Complete: Sender หรือ Receiver
+- Admin: Read-only ต่อ Request State
+
+## Suspended
+
+`Protected Request → account.active → Suspended Page → Logout POST`
+
+ห้าม Redirect Loop และห้าม Logout อัตโนมัติ

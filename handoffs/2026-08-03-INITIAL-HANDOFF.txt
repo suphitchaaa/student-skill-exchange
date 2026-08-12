@@ -1,0 +1,681 @@
+HANDOFF — STUDENT SKILL EXCHANGE (LARAVEL)
+สถานะสำหรับส่งต่อไปยังแชทใหม่
+
+==================================================
+1) ข้อมูลโปรเจกต์
+==================================================
+
+ชื่อระบบ: ระบบแลกเปลี่ยนทักษะระหว่างนักศึกษา
+ชื่อภาษาอังกฤษ: Student Skill Exchange
+ประเภทงาน: Mini Project / Term Project ขนาดเล็ก พัฒนาด้วย Laravel
+
+เป้าหมาย:
+ให้นักศึกษาระบุทักษะที่ตนสามารถสอนได้ ระบุทักษะที่ต้องการเรียน ค้นหานักศึกษาคนอื่น และส่งคำขอแลกเปลี่ยนทักษะกันได้ โดยต้องครอบคลุมข้อกำหนด Laravel ของอาจารย์ และคุม Scope ให้เล็ก ทำเสร็จได้จริง
+
+==================================================
+2) เทคโนโลยีที่ล็อกไว้
+==================================================
+
+Backend:
+- Laravel
+- PHP
+- MySQL หรือ MariaDB
+
+Frontend:
+- Blade Templates
+- Bootstrap 5
+- Vanilla JavaScript
+- Bootstrap Icons เพียงชุดเดียว
+
+Laravel Components:
+- Authentication
+- Middleware
+- Authorization / Policy
+- Form Request Validation
+- Laravel Storage
+- Queue
+- Mail หรือ Notification
+- Observer
+- Feature Tests
+
+ห้ามเพิ่มโดยไม่ได้รับอนุญาต:
+- React, Vue, Angular
+- Livewire, Inertia
+- Tailwind CSS
+- SPA Framework
+- WebSocket
+- Package ที่ซ้ำกับความสามารถมาตรฐาน Laravel
+- Package ที่เพิ่มความซับซ้อนโดยไม่จำเป็น
+
+==================================================
+3) ข้อกำหนดอาจารย์ที่ต้องครอบคลุม
+==================================================
+
+ระบบต้องมี:
+1. ผู้ใช้อย่างน้อย 2 กลุ่ม
+2. ควบคุมสิทธิ์ด้วย Middleware
+3. ฐานข้อมูลเชิงสัมพันธ์
+4. CRUD ครบถ้วน
+5. อัปโหลดรูปภาพ
+6. เปลี่ยนหรือลบรูปแล้วต้องลบไฟล์เก่าจริง
+7. ส่งอีเมลแบบ Asynchronous ผ่าน Queue
+8. ใช้ Observer กับเหตุการณ์สำคัญ
+9. Feature Tests อย่างน้อย 2 ฟังก์ชันสำคัญ
+10. เตรียม Production Configuration
+
+คำว่า “แจ้งเตือนสินค้า” ในข้อกำหนดเป็นเพียงตัวอย่าง ระบบนี้ใช้ Observer กับคำขอแลกเปลี่ยนทักษะแทน
+
+==================================================
+4) ผู้ใช้งานของระบบ
+==================================================
+
+Student:
+- สมัครสมาชิก เข้าสู่ระบบ ออกจากระบบ
+- ดูและแก้ไขโปรไฟล์ของตนเอง
+- อัปโหลด เปลี่ยน และลบรูปโปรไฟล์
+- CRUD ทักษะที่สอนได้
+- CRUD ทักษะที่ต้องการเรียน
+- ค้นหานักศึกษาด้วยชื่อ ทักษะ คณะ และชั้นปี
+- ดูโปรไฟล์นักศึกษาคนอื่น
+- ส่งคำขอแลกเปลี่ยน
+- ดูคำขอที่ส่งและได้รับ
+- ตอบรับหรือปฏิเสธคำขอที่ได้รับ
+- ยกเลิกคำขอที่ตนส่งและยังเป็น pending
+- สิ้นสุดกิจกรรมที่เป็น accepted
+- ดูประวัติคำขอ
+
+Admin:
+- เข้าสู่ระบบหลังบ้าน
+- ดู Dashboard พื้นฐาน
+- ดู ค้นหา ระงับ และเปิดใช้งานบัญชีนักศึกษา
+- CRUD รายการทักษะส่วนกลาง
+- ดู ค้นหา และกรองคำขอทั้งหมด
+
+Admin ห้ามตอบรับหรือปฏิเสธคำขอแทนนักศึกษา
+
+==================================================
+5) Scope Lock — ใช้คุมฟีเจอร์
+==================================================
+
+อยู่ใน Scope:
+- Authentication
+- Student/Admin Role
+- Role Middleware
+- Account Active/Suspended Guard
+- Student Profile
+- Profile Image Upload/Replace/Delete
+- Skill CRUD
+- Student Search
+- Public Student Profile
+- Exchange Request Workflow
+- Queue Email
+- Notification
+- ExchangeRequestObserver
+- Admin User Management
+- Admin Skill Management
+- Admin Request Monitoring
+- Feature Tests
+- Production Setup
+
+ห้ามทำ:
+- ระบบแชต
+- Real-time Notification / WebSocket
+- วิดีโอคอล
+- AI Matching / AI Recommendation
+- รีวิวและคะแนน
+- ระบบแต้ม / Badge / Gamification
+- ระบบชำระเงิน
+- Social Login
+- ปฏิทินนัดหมายแบบซับซ้อน
+- แผนที่ / GPS
+- รายงานหรือกราฟขั้นสูง
+- Export PDF
+- Mobile Application
+- Multi-language
+- ระบบสินค้า
+- Marketplace
+- ปุ่ม เมนู Route หรือหน้าจอที่ยังใช้งานไม่ได้
+
+กฎสำคัญ:
+Scope Lock ใช้คุมฟีเจอร์และพฤติกรรมของระบบ ห้าม Codex เพิ่มฟีเจอร์นอก Scope และห้ามทำ Phase ถัดไปล่วงหน้า
+
+==================================================
+6) Database Contract — ใช้คุมฐานข้อมูล
+==================================================
+
+ตารางหลัก:
+1. users
+2. student_profiles
+3. skills
+4. user_skills
+5. exchange_requests
+6. notifications
+7. jobs
+8. failed_jobs
+
+users:
+- id, name, student_code, email, password
+- role: student/admin
+- status: active/suspended
+- email_verified_at, remember_token, timestamps
+
+student_profiles:
+- id, user_id, faculty, major, year_level
+- bio, phone, contact_channel, profile_image, timestamps
+- user_id เป็น Unique
+- One-to-One กับ users
+- year_level 1–8
+
+skills:
+- id, name, category, is_active, timestamps, deleted_at
+- หมวดหมู่ตัวอย่าง: เทคโนโลยี ภาษา การออกแบบ ธุรกิจ วิชาการ งานอดิเรก
+
+user_skills:
+- id, user_id, skill_id, skill_type, description, timestamps
+- skill_type: offered/wanted
+- UNIQUE(user_id, skill_id, skill_type)
+
+exchange_requests:
+- id, sender_id, receiver_id
+- sender_user_skill_id, receiver_user_skill_id
+- learning_format: online/onsite/either
+- preferred_schedule, message
+- status, responded_at, completed_at, timestamps
+
+สถานะ:
+- pending
+- accepted
+- rejected
+- cancelled
+- completed
+
+Transition ที่อนุญาต:
+- pending -> accepted
+- pending -> rejected
+- pending -> cancelled
+- accepted -> completed
+
+กฎ:
+- sender ห้ามเท่ากับ receiver
+- sender skill ต้องเป็นของ sender และเป็น offered
+- receiver skill ต้องเป็นของ receiver และเป็น offered
+- receiver ต้อง active
+- ป้องกัน pending request ซ้ำ
+- ห้าม Hard Delete คำขอ
+- ต้องรักษาประวัติ
+
+กฎสำคัญ:
+Database Contract ใช้คุม Schema, Field, Relationship, Foreign Key, Index, Unique Constraint และ Delete Behavior ห้าม Codex เปลี่ยนฐานข้อมูลเอง
+
+==================================================
+7) User Flow
+==================================================
+
+Student Entry:
+เปิดเว็บไซต์ -> สมัครหรือ Login -> ตรวจ role/status -> active ไป Dashboard -> suspended ถูกบล็อก
+
+First-Time Setup:
+กรอกคณะ สาขา ชั้นปี แนะนำตัว ช่องทางติดต่อ -> อัปโหลดรูป -> เพิ่ม offered skill -> เพิ่ม wanted skill -> พร้อมค้นหา
+
+Search:
+ค้นหาด้วยชื่อ ทักษะ คณะ ชั้นปี
+- ไม่แสดงตนเอง
+- แสดงเฉพาะ active user
+- มี Empty State และปุ่มล้างตัวกรอง
+
+Send Request:
+ดูโปรไฟล์ผู้อื่น -> เลือก skill ของตน -> เลือก skill ของผู้รับ -> เลือกรูปแบบ -> ระบุเวลาสะดวก -> ข้อความ -> Validate -> สร้าง pending -> Observer -> Queue -> Email ผู้รับ
+
+Incoming:
+- ผู้รับ Accept: pending -> accepted
+- ผู้รับ Reject: pending -> rejected
+
+Outgoing:
+- ผู้ส่ง Cancel: pending -> cancelled
+
+Complete:
+- ผู้ส่งหรือผู้รับ: accepted -> completed
+- แจ้งทั้งสองฝ่าย
+- เวอร์ชันนี้ไม่ใช้ระบบยืนยันสองฝ่ายเพื่อคง Scope ให้เล็ก
+
+==================================================
+8) Queue, Notification และ Observer
+==================================================
+
+ใช้ ExchangeRequestObserver กับ created และ updated
+Observer มีหน้าที่ตรวจเหตุการณ์และ Dispatch Notification/Job เท่านั้น
+ห้ามใส่ Business Logic ขนาดใหญ่ใน Observer
+ห้ามส่งอีเมลแบบ Blocking ใน Controller
+
+เหตุการณ์แจ้งเตือน:
+- คำขอใหม่ -> ผู้รับ
+- Accepted -> ผู้ส่ง
+- Rejected -> ผู้ส่ง
+- Cancelled -> ผู้รับ
+- Completed -> ทั้งสองฝ่าย
+
+Local Development:
+- QUEUE_CONNECTION=database
+- MAIL_MAILER=log หรือ Mail Sandbox
+
+Test:
+- Notification::fake()
+- Mail::fake()
+- Queue::fake()
+
+==================================================
+9) UX/UI Lock
+==================================================
+
+แนวทาง: Clean Campus Utility
+- เรียบ เป็นระบบมหาวิทยาลัยสมัยใหม่
+- ใช้งานง่ายและน่าเชื่อถือ
+- เน้นข้อมูลนักศึกษาและทักษะ
+- ไม่เป็น Social Media / Marketplace / AI SaaS
+
+สีหลัก:
+- Navy #1E3A5F
+- Navy Hover #162F4D
+- Green #2F7D6D
+- Background #F5F7F8
+- Surface #FFFFFF
+- Border #DDE3E8
+- Primary Text #1F2933
+- Secondary Text #667085
+- Soft Navy #EAF0F6
+- Soft Green #E8F4F0
+- Warning #B7791F
+- Danger #C2413B
+
+กฎ:
+- ภาษาไทย
+- ไม่มีอิโมจิ
+- ไม่มี Gradient
+- ไม่มี Robot, Sparkle, Glow, Glassmorphism, Blob, ภาพ 3D
+- ไม่มี Fake Chart
+- ใช้ Bootstrap Icons ชุดเดียว
+- Body 14–16px และข้อความหลักไม่ต่ำกว่า 13px
+- Form มี Label ทุกช่อง
+- Validation Message ภาษาไทย
+- Empty State ต้องมี Next Action
+- รองรับ 1366×768 ที่ 100%
+- ไม่มี Horizontal Scroll ทั้งหน้า
+- ไม่มีปุ่มหรือเมนูที่ใช้งานไม่ได้
+
+==================================================
+10) หน้าหลัก
+==================================================
+
+Student Sidebar:
+- ภาพรวม
+- ค้นหาทักษะ
+- ทักษะของฉัน
+- คำขอแลกเปลี่ยน
+- โปรไฟล์
+- ออกจากระบบ
+
+Admin Sidebar:
+- ภาพรวม
+- จัดการนักศึกษา
+- จัดการทักษะ
+- ตรวจสอบคำขอ
+- ออกจากระบบ
+
+Student Dashboard:
+- ทักษะที่สอนได้
+- ทักษะที่ต้องการเรียน
+- คำขอที่รอตอบกลับ
+- กิจกรรมที่กำลังดำเนินการ
+- คำขอล่าสุด
+
+Exchange Request Tabs:
+- คำขอที่ได้รับ
+- คำขอที่ส่ง
+- ประวัติทั้งหมด
+
+==================================================
+11) Route และสิทธิ์โดยสรุป
+==================================================
+
+Public/Auth:
+- GET /
+- GET/POST /login
+- GET/POST /register
+- POST /logout
+
+Student Middleware:
+- auth
+- role:student
+- account.active
+
+Admin Middleware:
+- auth
+- role:admin
+- account.active
+
+Student Routes:
+- /dashboard
+- /profile
+- /profile/edit
+- /profile/image
+- /my-skills
+- /students
+- /students/{user}
+- /students/{user}/exchange-request
+- /exchange-requests
+- /exchange-requests/{id}
+- accept / reject / cancel / complete
+
+Admin Routes:
+- /admin/dashboard
+- /admin/students
+- suspend / activate
+- /admin/skills
+- /admin/exchange-requests
+
+HTTP Rules:
+- Create = POST
+- Update = PUT/PATCH
+- Delete = DELETE
+- Logout = POST
+- ห้ามเปลี่ยนสถานะด้วย GET
+- ทุก State-changing Request ต้องมี CSRF
+
+==================================================
+12) Feature Tests
+==================================================
+
+ขั้นต่ำตามอาจารย์: 2 ฟังก์ชันสำคัญ
+เป้าหมายโปรเจกต์: 4 กลุ่ม
+1. Role และ Middleware
+2. ส่งคำขอแลกเปลี่ยน
+3. ตอบรับหรือปฏิเสธคำขอ
+4. เปลี่ยนและลบรูปโปรไฟล์
+
+Test สำคัญ:
+- Guest เข้า Dashboard ไม่ได้
+- Student เข้า Admin ไม่ได้
+- Admin เข้า Admin ได้
+- Suspended User ถูกบล็อก
+- ส่งคำขอถูกต้องได้
+- ส่งให้ตนเองไม่ได้
+- ใช้ Skill ของผู้อื่นไม่ได้
+- ผู้รับตอบรับได้
+- ผู้ใช้อื่นตอบรับแทนไม่ได้
+- ผู้ส่งยกเลิก Pending ได้
+- เปลี่ยนรูปแล้วไฟล์เก่าถูกลบ
+- ลบรูปแล้วไฟล์จริงถูกลบ
+- php artisan test ผ่าน
+
+==================================================
+13) Phase Plan
+==================================================
+
+Phase 0 — Specification Lock / Environment Preparation
+Phase 1 — Laravel Foundation and Authentication
+Phase 2 — Database and Model Relationships
+Phase 3 — Student Profile and Image Management
+Phase 4 — Skill Management
+Phase 5 — Search and Student Public Profile
+Phase 6 — Exchange Request Workflow
+Phase 7 — Queue, Mail, Notification and Observer
+Phase 8 — Admin Management
+Phase 9 — Feature Test Completion
+Phase 10 — UX/UI Integration
+Phase 11 — Final QA and Production Setup
+
+==================================================
+14) กฎการสั่ง Codex
+==================================================
+
+Codex ต้อง:
+- อ่าน AGENTS.md และ docs ตามลำดับ
+- ทำเฉพาะ Phase ที่ได้รับคำสั่ง
+- Inspect -> Plan -> Implement -> Test -> Review Diff -> Report -> รออนุมัติ
+
+Codex ห้าม:
+- เพิ่มฟีเจอร์นอก Scope
+- เปลี่ยน Database Contract
+- เปลี่ยน User Flow
+- เพิ่มสถานะคำขอ
+- ทำ Phase ถัดไปล่วงหน้า
+- แก้ AGENTS.md หรือ docs โดยไม่ได้รับอนุญาต
+- สร้างปุ่มหรือเมนูหลอก
+- Commit หรือ Push เอง
+- รายงาน PASS หากไม่ได้ทดสอบจริง
+
+Completion Report:
+1. สิ่งที่ทำ
+2. ไฟล์ที่สร้าง
+3. ไฟล์ที่แก้
+4. Package พร้อมเหตุผล
+5. คำสั่งที่รัน
+6. ผล Test
+7. Manual Browser QA
+8. สิ่งที่ยังไม่ได้ทำ
+9. ความเสี่ยง
+10. Git Status
+11. Boundary ไฟล์ที่พร้อมตรวจ
+
+สถานะที่อนุญาต:
+- READY FOR MANUAL QA
+- PARTIAL — NOT READY TO COMMIT
+- BLOCKED — NEEDS DECISION
+
+==================================================
+15) กฎการเขียน Prompt
+==================================================
+
+Prompt ต้องประหยัด Token อย่างเคร่งครัด
+รูปแบบ:
+- Header งานแบบสั้นนอก Prompt
+- Context
+- Scope
+- Rules
+- Validation
+- Output / Stop
+
+ห้าม:
+- เล่าประวัติซ้ำ
+- คัดลอกรายละเอียดที่ Codex อ่านได้จาก AGENTS.md/docs
+- แตกงานยิบย่อยเกินจำเป็น
+- ใส่รายละเอียดนอก Phase
+- ขยาย Scope
+
+ให้ทำงานเป็นกลุ่มตาม Boundary ธรรมชาติ เช่น Route + Controller + Validation + View + Test ที่เกี่ยวข้อง
+
+==================================================
+16) ไฟล์ล็อกที่สร้างแล้ว
+==================================================
+
+- AGENTS.md
+- README.md
+- MANIFEST.json
+- docs/01-PROJECT-SCOPE-LOCK.md
+- docs/02-USER-FLOW.md
+- docs/03-DATABASE-CONTRACT.md
+- docs/04-UX-UI-RULES.md
+- docs/05-ACCEPTANCE-TESTS.md
+- docs/06-PHASE-PLAN.md
+- docs/07-ROUTE-ACCESS-MATRIX.md
+- prompts/00-READ-ONLY-AUDIT.md
+- prompts/01-PHASE-1-FOUNDATION.md
+
+ZIP:
+student-skill-exchange-project-lock.zip
+
+กฎ:
+- AGENTS.md ต้องอยู่ Root Repository
+- docs เป็น Source of Truth
+- ไม่ตั้ง Windows Read-only
+- ใช้ Git Baseline และ git diff ตรวจไฟล์ล็อก
+
+==================================================
+17) สภาพแวดล้อมของผู้ใช้
+==================================================
+
+มีแล้ว:
+- VS Code
+- XAMPP
+
+ยังต้องตรวจหรือติดตั้ง:
+- PHP ของ XAMPP ให้เรียกผ่าน PATH ได้
+- Composer
+- Node.js LTS และ npm
+- Git
+
+ตำแหน่งโปรเจกต์ที่วางแผน:
+C:\xampp\htdocs\student-skill-exchange
+
+ฐานข้อมูล:
+- student_skill_exchange
+- student_skill_exchange_test
+
+==================================================
+18) สถานะล่าสุดของการตั้งเครื่อง
+==================================================
+
+ภาพล่าสุดแสดงว่า:
+- VS Code ยังเปิด Untitled Workspace
+- ยังเปิดโฟลเดอร์งาน Java เดิม
+- Terminal อยู่ที่ C:\suphitchajava
+- php -v ยังไม่ทำงาน เพราะ Windows หา PHP ไม่เจอ
+
+คำแนะนำล่าสุด:
+- ออกจากโฟลเดอร์เดิมด้วย `cd ..`
+- หรือเข้าโฟลเดอร์ใหม่โดยตรง:
+  `cd C:\xampp\htdocs\student-skill-exchange`
+- ตรวจ PHP ด้วย:
+  `C:\xampp\php\php.exe -v`
+- หากคำสั่งเต็มทำงาน ให้เพิ่ม `C:\xampp\php` ลง PATH
+- ปิด VS Code แล้วเปิดใหม่
+- ตรวจด้วย `php -v` และ `where php`
+
+ยังไม่ได้ยืนยัน:
+- PHP Version
+- Composer
+- Node.js/npm
+- Git
+- Database
+- โฟลเดอร์โปรเจกต์
+- การวางไฟล์ล็อก
+- Git Baseline Commit
+
+==================================================
+19) ลำดับถัดไป
+==================================================
+
+ทำทีละขั้นและรอผลผู้ใช้ก่อนขั้นต่อไป:
+1. `C:\xampp\php\php.exe -v`
+2. เพิ่ม `C:\xampp\php` ลง PATH
+3. ตรวจ `php -v` และ `where php`
+4. ตรวจ/ติดตั้ง Composer
+5. ตรวจ/ติดตั้ง Node.js LTS และ npm
+6. ตรวจ/ติดตั้ง Git
+7. สร้างฐาน Development/Test
+8. สร้าง `C:\xampp\htdocs\student-skill-exchange`
+9. แตกไฟล์ล็อกลง Root
+10. เปิดโฟลเดอร์ใน VS Code
+11. git init และ Commit Baseline
+12. ส่ง prompts/00-READ-ONLY-AUDIT.md ให้ Codex
+13. ต้องได้ READY TO START ก่อน Phase 1
+
+==================================================
+20) สถานะความคืบหน้า
+==================================================
+
+Phase ปัจจุบัน:
+Phase 0 — Specification Lock / Environment Preparation
+
+เสร็จแล้ว:
+- วิเคราะห์ข้อกำหนดอาจารย์
+- ล็อก Scope
+- ล็อก User Flow
+- ล็อก Database Contract
+- ล็อก UX/UI
+- ล็อก Acceptance Tests
+- ล็อก Phase Plan
+- สร้างชุดไฟล์ AGENTS.md, docs และ prompts
+- สร้าง ZIP ชุดไฟล์ล็อก
+
+ยังไม่เริ่ม:
+- Laravel Project
+- Authentication
+- Migration
+- Coding ทุก Module
+- Feature Tests จริง
+- Queue/Observer จริง
+- Admin
+- UX/UI Implementation
+- Production Setup
+
+เปอร์เซ็นต์:
+- Specification / Planning: 100%
+- Environment Setup: ยังไม่เสร็จ
+- Development: 0%
+- Overall Project: ประมาณ 10%
+
+Overall เป็นค่าประมาณจากงานเตรียมเอกสาร ยังไม่มีโค้ดระบบจริง
+
+==================================================
+21) โมเดลและรูปแบบการทำงาน
+==================================================
+
+- ChatGPT: วางแผน คุม Scope ตรวจ Prompt และตรวจผล
+- Codex: สร้างและแก้โค้ดใน Repository
+- ผู้ใช้: ตรวจ Manual Browser QA และอนุมัติแต่ละ Phase
+
+กฎ:
+- Codex ทำโค้ดได้ทั้งโปรเจกต์ แต่ต้องแบ่ง Phase
+- Commit หลัง Manual QA
+- ห้ามทำทั้งระบบใน Prompt เดียว
+
+==================================================
+22) กฎสำหรับแชทใหม่
+==================================================
+
+แชทใหม่ต้อง:
+- อ่าน Handoff นี้ทั้งหมด
+- ห้ามเดา State
+- ห้ามสร้าง Prompt ใหม่จนกว่าผู้ใช้จะสั่ง
+- ห้ามข้าม Environment Setup
+- ห้ามเริ่ม Laravel ก่อน Read-only Audit ผ่าน
+- ห้ามเปลี่ยน Scope Lock
+- ห้ามเปลี่ยน Database Contract
+- ห้ามเพิ่มฟีเจอร์
+- อธิบายทีละขั้นและรอผลผู้ใช้ก่อนขั้นต่อไป
+
+==================================================
+23) กฎเตือนเมื่อแชทหน่วง
+==================================================
+
+ต้องเตือนให้ย้ายแชทใหม่เมื่อ:
+- แชทเริ่มหน่วงหรือตอบช้า
+- บริบทยาวมาก
+- เริ่มเสี่ยงสับสน
+- คำตอบเริ่มไม่ตรง State
+- กำลังเปลี่ยน Phase หรือ Module ใหญ่
+
+ก่อนย้ายต้องทำ Handoff ที่มี:
+- แผน
+- สถานะ
+- Scope Lock
+- Database Contract
+- UX/UI Lock
+- Phase
+- Prompt Rules
+- Next Step
+- เปอร์เซ็นต์
+- โมเดลและวิธีทำงาน
+
+==================================================
+24) ข้อความตอบรับที่ล็อกไว้
+==================================================
+
+เมื่อผู้ใช้ส่งข้อกำหนด Handoff และยังไม่สั่งให้เขียน Prompt ใหม่ ให้ตอบเพียง:
+
+“เข้าใจบริบทแล้ว จะไม่เขียน Prompt ใหม่จนกว่าคุณจะแจ้งให้ทำต่อ”
+
+==================================================
+END OF HANDOFF
+==================================================

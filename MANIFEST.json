@@ -1,0 +1,110 @@
+{
+  "project": "Student Skill Exchange",
+  "version": "2.0",
+  "lock_strategy": "Day 0 audit + 5 implementation days + 2 buffer/final days",
+  "planning_agent": "Claude",
+  "implementation_agent": "Codex",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "6d70c2c64de487706a2e2018418a7f069172cf10fc0d217216d0ee7882318a84",
+      "size_bytes": 4813
+    },
+    {
+      "path": "DESIGN.md",
+      "sha256": "040adc842ce1ead8621a3b2055fdeb0ce8ff18929ad79cf981441fb33e989c8b",
+      "size_bytes": 1508
+    },
+    {
+      "path": "HANDOFF-LATEST.txt",
+      "sha256": "a826d791c99e25a2b28588c5559ad5d21079421196fa584854abccef60be3456",
+      "size_bytes": 950
+    },
+    {
+      "path": "README.md",
+      "sha256": "de94f0d1ab3b6c8f2aeffa3e94e9b46d1dd7bae23ffe3224f5cf862ffb2ffed3",
+      "size_bytes": 1582
+    },
+    {
+      "path": "docs/01-PROJECT-SCOPE-LOCK.md",
+      "sha256": "627d35b2775bd22b6be0eef5dbfaa6962757554b9529abf61e56a8bd9c1a754c",
+      "size_bytes": 2749
+    },
+    {
+      "path": "docs/02-USER-FLOW.md",
+      "sha256": "eaad788e1756e927a8382ff511d3e8214963de1c9bcec05591a05e583b826b98",
+      "size_bytes": 1839
+    },
+    {
+      "path": "docs/03-DATABASE-CONTRACT.md",
+      "sha256": "2c1b7bad0d67d4d1084dcad1975bf5f715ce44d6f832f12224f1889763542fac",
+      "size_bytes": 2094
+    },
+    {
+      "path": "docs/04-UX-UI-RULES.md",
+      "sha256": "04f1dab7555a0ea5835c24f45f1e6ce0066f60bfb946d5491033fb9298904e90",
+      "size_bytes": 2223
+    },
+    {
+      "path": "docs/05-ACCEPTANCE-TESTS.md",
+      "sha256": "18afc7203ffc6ccacd4e985f88f82cf9e1a9e672d3b935cbc8d2cb521588b8c1",
+      "size_bytes": 2881
+    },
+    {
+      "path": "docs/06-PHASE-PLAN.md",
+      "sha256": "6dd369ff1fe4dd260447e2ba27841b3a9e2c8bf3e9cfba7a39db8588aa55c665",
+      "size_bytes": 1523
+    },
+    {
+      "path": "docs/07-ROUTE-ACCESS-MATRIX.md",
+      "sha256": "101119f0f6514fc98bbb7e5722826b89ec523cc3cce89233725113349574629e",
+      "size_bytes": 2213
+    },
+    {
+      "path": "docs/08-CODE-STRUCTURE-RULES.md",
+      "sha256": "5884a32379ed75e12b764e5973def3ab798fd67e16edbae7de80fa85b121edf5",
+      "size_bytes": 2237
+    },
+    {
+      "path": "docs/09-WORKFLOW-GOVERNANCE.md",
+      "sha256": "1e9b22dff8c5644279b0cc7f83f29fdebf4ba74416712d3b2a2e6c50e7867ca8",
+      "size_bytes": 1431
+    },
+    {
+      "path": "docs/10-APPROVED-MASTER-PLAN.md",
+      "sha256": "ae4329db5c6a3e6486ad6e5ba4ea460360758a613af66a1fd90caf46ee4ac211",
+      "size_bytes": 42086
+    },
+    {
+      "path": "docs/11-APPROVED-SCOPE-DECISIONS.md",
+      "sha256": "99c7eef240ff023c32c94df445ff256b1b88746091aaeb74ae3b07261806d3a4",
+      "size_bytes": 1931
+    },
+    {
+      "path": "handoffs/2026-08-03-INITIAL-HANDOFF.txt",
+      "sha256": "1d734fac50b71bb3705bb9069f251ff2c368aa785e41093e0cbe6bca9efc85a2",
+      "size_bytes": 26219
+    },
+    {
+      "path": "handoffs/README.md",
+      "sha256": "8c3a9899d3155e3482672ba9e8fb9a831a4c5b53e9618e90b315e1e8b9c519bb",
+      "size_bytes": 459
+    },
+    {
+      "path": "prompts/00-CLAUDE-7-DAY-PLANNING.md",
+      "sha256": "1467622d664d386f6e037c9e4e9e52c21b6e369e7d21ec069c9590757ee90f2c",
+      "size_bytes": 665
+    },
+    {
+      "path": "prompts/01-CODEX-READ-ONLY-AUDIT.md",
+      "sha256": "76e93248283fa479c4c9389ffe4b0e4ba79c03b1d2d10921142e5a07a5b9f397",
+      "size_bytes": 1654
+    },
+    {
+      "path": "prompts/checkpoints/EC-00-ENVIRONMENT-AUDIT.md",
+      "sha256": "76e93248283fa479c4c9389ffe4b0e4ba79c03b1d2d10921142e5a07a5b9f397",
+      "size_bytes": 1654
+    }
+  ],
+  "manifest_note": "MANIFEST.json and CHECKSUMS.sha256 are excluded from files to avoid recursive hashing."
+}
