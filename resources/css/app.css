@@ -1,4 +1,81 @@
-@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    --campus-navy: #183b5b;
+    --campus-blue: #2e6b9b;
+    --campus-sky: #eef5fa;
+    --campus-slate: #5f6f7d;
+    --campus-border: #dbe4ea;
+    --campus-bg: #f6f8fa;
+}
+
+body {
+    background: var(--campus-bg);
+    color: #263746;
+    font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.auth-page {
+    min-height: 100vh;
+    background: var(--campus-sky);
+}
+
+.auth-card,
+.campus-card {
+    border: 1px solid var(--campus-border);
+    border-radius: .75rem;
+    box-shadow: 0 .15rem .6rem rgba(24, 59, 91, .08);
+}
+
+.campus-brand {
+    color: var(--campus-navy);
+    font-weight: 700;
+}
+
+.app-sidebar {
+    background: var(--campus-navy);
+    min-height: 100vh;
+}
+
+.app-sidebar .nav-link {
+    border-radius: .45rem;
+    color: rgba(255, 255, 255, .82);
+    padding: .7rem .8rem;
+}
+
+.app-sidebar .nav-link:hover,
+.app-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+}
+
+.app-topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--campus-border);
+}
+
+.metric-card {
+    min-height: 132px;
+}
+
+.metric-icon {
+    align-items: center;
+    background: var(--campus-sky);
+    border-radius: .5rem;
+    color: var(--campus-blue);
+    display: inline-flex;
+    font-size: 1.2rem;
+    height: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .app-sidebar {
+        min-height: auto;
+    }
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
