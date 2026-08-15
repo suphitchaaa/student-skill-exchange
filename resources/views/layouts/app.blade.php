@@ -28,6 +28,9 @@
                         <a class="nav-link {{ request()->routeIs('user-skills.*') ? 'active' : '' }}" href="{{ route('user-skills.index') }}">
                             <i class="bi bi-journal-check me-2" aria-hidden="true"></i>ทักษะของฉัน
                         </a>
+                        <a class="nav-link {{ request()->routeIs('exchange-requests.*') ? 'active' : '' }}" href="{{ route('exchange-requests.index') }}">
+                            <i class="bi bi-arrow-left-right me-2" aria-hidden="true"></i>คำขอแลกเปลี่ยน
+                        </a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="mt-3">
                         @csrf

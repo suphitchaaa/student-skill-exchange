@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExchangeRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentSearchController;
 use App\Http\Controllers\UserSkillController;
@@ -34,6 +35,10 @@ Route::middleware(['auth', 'role:student', 'account.active'])->group(function ()
     Route::delete('/profile/image', [ProfileController::class, 'destroyImage'])->name('profile.image.destroy');
     Route::get('/students', [StudentSearchController::class, 'index'])->name('students.index');
     Route::get('/students/{user}', [StudentSearchController::class, 'show'])->name('students.show');
+    Route::get('/students/{user}/exchange-request', [ExchangeRequestController::class, 'create'])->name('exchange-requests.create');
+    Route::post('/students/{user}/exchange-request', [ExchangeRequestController::class, 'store'])->name('exchange-requests.store');
+    Route::get('/exchange-requests', [ExchangeRequestController::class, 'index'])->name('exchange-requests.index');
+    Route::get('/exchange-requests/{exchangeRequest}', [ExchangeRequestController::class, 'show'])->name('exchange-requests.show');
     Route::get('/my-skills', [UserSkillController::class, 'index'])->name('user-skills.index');
     Route::post('/my-skills', [UserSkillController::class, 'store'])->name('user-skills.store');
     Route::put('/my-skills/{userSkill}', [UserSkillController::class, 'update'])->name('user-skills.update');

@@ -12,6 +12,12 @@
         <a class="btn btn-outline-secondary" href="{{ route('students.index') }}">กลับไปค้นหา</a>
     </div>
 
+    @if ($student->id !== auth()->id())
+        <div class="mb-4">
+            <a class="btn btn-primary" href="{{ route('exchange-requests.create', $student) }}"><i class="bi bi-send me-1" aria-hidden="true"></i>เริ่มคำขอแลกเปลี่ยน</a>
+        </div>
+    @endif
+
     <section class="campus-card bg-white p-4 mb-4">
         <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-4">
             @if ($profileImageUrl)
