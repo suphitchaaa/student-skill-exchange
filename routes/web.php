@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentSearchController;
 use App\Http\Controllers\UserSkillController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,8 @@ Route::middleware(['auth', 'role:student', 'account.active'])->group(function ()
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/image', [ProfileController::class, 'storeImage'])->name('profile.image.store');
     Route::delete('/profile/image', [ProfileController::class, 'destroyImage'])->name('profile.image.destroy');
+    Route::get('/students', [StudentSearchController::class, 'index'])->name('students.index');
+    Route::get('/students/{user}', [StudentSearchController::class, 'show'])->name('students.show');
     Route::get('/my-skills', [UserSkillController::class, 'index'])->name('user-skills.index');
     Route::post('/my-skills', [UserSkillController::class, 'store'])->name('user-skills.store');
     Route::put('/my-skills/{userSkill}', [UserSkillController::class, 'update'])->name('user-skills.update');

@@ -80,6 +80,34 @@ body {
     width: 9rem;
 }
 
+.student-avatar,
+.student-avatar-placeholder,
+.public-profile-image,
+.public-profile-image-placeholder {
+    border: 1px solid var(--campus-border);
+    border-radius: 50%;
+    flex: 0 0 auto;
+    height: 4rem;
+    object-fit: cover;
+    width: 4rem;
+}
+
+.student-avatar-placeholder,
+.public-profile-image-placeholder {
+    align-items: center;
+    background: var(--campus-sky);
+    color: var(--campus-blue);
+    display: inline-flex;
+    font-size: 1.5rem;
+    justify-content: center;
+}
+
+.public-profile-image,
+.public-profile-image-placeholder {
+    height: 7rem;
+    width: 7rem;
+}
+
 .profile-image-placeholder {
     align-items: center;
     background: var(--campus-sky);

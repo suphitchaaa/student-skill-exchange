@@ -19,6 +19,9 @@
                         <i class="bi bi-grid-1x2 me-2" aria-hidden="true"></i>ภาพรวม
                     </a>
                     @if (auth()->user()->role === 'student')
+                        <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.index') }}">
+                            <i class="bi bi-search me-2" aria-hidden="true"></i>ค้นหาทักษะ
+                        </a>
                         <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">
                             <i class="bi bi-person-vcard me-2" aria-hidden="true"></i>โปรไฟล์ของฉัน
                         </a>
