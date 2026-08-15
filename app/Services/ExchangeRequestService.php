@@ -7,6 +7,7 @@ use App\Models\ExchangeRequest;
 use App\Models\User;
 use App\Models\UserSkill;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class ExchangeRequestService
@@ -73,5 +74,46 @@ class ExchangeRequestService
             ->whereHas('skill', fn ($query) => $query->where('is_active', true))
             ->with('skill')
             ->first();
+    }
+
+    public function accept(User $actor, ExchangeRequest $exchangeRequest): ExchangeRequest
+    {
+        return $this->transition($actor, $exchangeRequest, 'accept', 'pending', 'accepted', 'responded_at');
+    }
+
+    public function reject(User $actor, ExchangeRequest $exchangeRequest): ExchangeRequest
+    {
+        return $this->transition($actor, $exchangeRequest, 'reject', 'pending', 'rejected', 'responded_at');
+    }
+
+    public function cancel(User $actor, ExchangeRequest $exchangeRequest): ExchangeRequest
+    {
+        return $this->transition($actor, $exchangeRequest, 'cancel', 'pending', 'cancelled');
+    }
+
+    public function complete(User $actor, ExchangeRequest $exchangeRequest): ExchangeRequest
+    {
+        return $this->transition($actor, $exchangeRequest, 'complete', 'accepted', 'completed', 'completed_at');
+    }
+
+    private function transition(User $actor, ExchangeRequest $exchangeRequest, string $ability, string $from, string $to, ?string $timestamp = null): ExchangeRequest
+    {
+        return DB::transaction(function () use ($actor, $exchangeRequest, $ability, $from, $to, $timestamp): ExchangeRequest {
+            $lockedRequest = ExchangeRequest::query()->lockForUpdate()->findOrFail($exchangeRequest->id);
+            Gate::forUser($actor)->authorize($ability, $lockedRequest);
+
+            if ($lockedRequest->status !== $from) {
+                throw ValidationException::withMessages(['status' => 'คำขออยู่ในสถานะที่ไม่สามารถดำเนินการนี้ได้']);
+            }
+
+            $attributes = ['status' => $to];
+            if ($timestamp !== null) {
+                $attributes[$timestamp] = now();
+            }
+
+            $lockedRequest->update($attributes);
+
+            return $lockedRequest->refresh();
+        });
     }
 }

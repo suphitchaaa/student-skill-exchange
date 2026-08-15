@@ -39,6 +39,10 @@ Route::middleware(['auth', 'role:student', 'account.active'])->group(function ()
     Route::post('/students/{user}/exchange-request', [ExchangeRequestController::class, 'store'])->name('exchange-requests.store');
     Route::get('/exchange-requests', [ExchangeRequestController::class, 'index'])->name('exchange-requests.index');
     Route::get('/exchange-requests/{exchangeRequest}', [ExchangeRequestController::class, 'show'])->name('exchange-requests.show');
+    Route::patch('/exchange-requests/{exchangeRequest}/accept', [ExchangeRequestController::class, 'accept'])->name('exchange-requests.accept');
+    Route::patch('/exchange-requests/{exchangeRequest}/reject', [ExchangeRequestController::class, 'reject'])->name('exchange-requests.reject');
+    Route::patch('/exchange-requests/{exchangeRequest}/cancel', [ExchangeRequestController::class, 'cancel'])->name('exchange-requests.cancel');
+    Route::patch('/exchange-requests/{exchangeRequest}/complete', [ExchangeRequestController::class, 'complete'])->name('exchange-requests.complete');
     Route::get('/my-skills', [UserSkillController::class, 'index'])->name('user-skills.index');
     Route::post('/my-skills', [UserSkillController::class, 'store'])->name('user-skills.store');
     Route::put('/my-skills/{userSkill}', [UserSkillController::class, 'update'])->name('user-skills.update');

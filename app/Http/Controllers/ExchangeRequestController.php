@@ -95,6 +95,38 @@ class ExchangeRequestController extends Controller
         ]);
     }
 
+    public function accept(Request $request, ExchangeRequest $exchangeRequest, ExchangeRequestService $service): RedirectResponse
+    {
+        Gate::authorize('accept', $exchangeRequest);
+        $service->accept($request->user(), $exchangeRequest);
+
+        return to_route('exchange-requests.show', $exchangeRequest)->with('success', 'ตอบรับคำขอเรียบร้อยแล้ว');
+    }
+
+    public function reject(Request $request, ExchangeRequest $exchangeRequest, ExchangeRequestService $service): RedirectResponse
+    {
+        Gate::authorize('reject', $exchangeRequest);
+        $service->reject($request->user(), $exchangeRequest);
+
+        return to_route('exchange-requests.show', $exchangeRequest)->with('success', 'ปฏิเสธคำขอเรียบร้อยแล้ว');
+    }
+
+    public function cancel(Request $request, ExchangeRequest $exchangeRequest, ExchangeRequestService $service): RedirectResponse
+    {
+        Gate::authorize('cancel', $exchangeRequest);
+        $service->cancel($request->user(), $exchangeRequest);
+
+        return to_route('exchange-requests.show', $exchangeRequest)->with('success', 'ยกเลิกคำขอเรียบร้อยแล้ว');
+    }
+
+    public function complete(Request $request, ExchangeRequest $exchangeRequest, ExchangeRequestService $service): RedirectResponse
+    {
+        Gate::authorize('complete', $exchangeRequest);
+        $service->complete($request->user(), $exchangeRequest);
+
+        return to_route('exchange-requests.show', $exchangeRequest)->with('success', 'บันทึกกิจกรรมเสร็จสิ้นแล้ว');
+    }
+
     private function statusLabels(): array
     {
         return [
