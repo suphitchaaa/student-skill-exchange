@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\StudentProfile;
+use App\Models\UserSkill;
 use App\Policies\StudentProfilePolicy;
+use App\Policies\UserSkillPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(StudentProfile::class, StudentProfilePolicy::class);
+        Gate::policy(UserSkill::class, UserSkillPolicy::class);
     }
 }

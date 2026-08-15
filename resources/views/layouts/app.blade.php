@@ -22,6 +22,9 @@
                         <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">
                             <i class="bi bi-person-vcard me-2" aria-hidden="true"></i>โปรไฟล์ของฉัน
                         </a>
+                        <a class="nav-link {{ request()->routeIs('user-skills.*') ? 'active' : '' }}" href="{{ route('user-skills.index') }}">
+                            <i class="bi bi-journal-check me-2" aria-hidden="true"></i>ทักษะของฉัน
+                        </a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="mt-3">
                         @csrf
