@@ -31,6 +31,10 @@
                         <a class="nav-link {{ request()->routeIs('exchange-requests.*') ? 'active' : '' }}" href="{{ route('exchange-requests.index') }}">
                             <i class="bi bi-arrow-left-right me-2" aria-hidden="true"></i>คำขอแลกเปลี่ยน
                         </a>
+                    @elseif (auth()->user()->role === 'admin')
+                        <a class="nav-link {{ request()->routeIs('admin.students.*') ? 'active' : '' }}" href="{{ route('admin.students.index') }}">
+                            <i class="bi bi-person-lines-fill me-2" aria-hidden="true"></i>จัดการนักศึกษา
+                        </a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="mt-3">
                         @csrf
@@ -49,6 +53,9 @@
                     <span class="text-secondary small"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>{{ auth()->user()->name }}</span>
                 </header>
                 <main class="p-3 p-md-4">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">{{ session('status') }}</div>
+                    @endif
                     @yield('content')
                 </main>
             </div>

@@ -12,11 +12,22 @@ class DashboardController extends Controller
 {
     public function __invoke(): View
     {
+        $requestStatusCounts = ExchangeRequest::query()
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
         return view('dashboard.admin', [
+            'studentsCount' => User::query()->where('role', 'student')->count(),
             'activeStudentsCount' => User::query()->where('role', 'student')->where('status', 'active')->count(),
             'suspendedStudentsCount' => User::query()->where('role', 'student')->where('status', 'suspended')->count(),
-            'activeSkillsCount' => Skill::query()->where('is_active', true)->count(),
-            'pendingRequestsCount' => ExchangeRequest::query()->where('status', 'pending')->count(),
+            'skillsCount' => Skill::query()->where('is_active', true)->whereNull('deleted_at')->count(),
+            'requestStatusCounts' => $requestStatusCounts,
+            'recentRequests' => ExchangeRequest::query()
+                ->with(['sender', 'receiver'])
+                ->latest()
+                ->limit(8)
+                ->get(),
             'dashboardRoute' => route('admin.dashboard'),
             'dashboardRouteName' => 'admin.dashboard',
             'roleLabel' => 'พื้นที่ผู้ดูแลระบบ',

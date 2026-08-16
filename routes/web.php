@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
@@ -51,4 +52,8 @@ Route::middleware(['auth', 'role:student', 'account.active'])->group(function ()
 
 Route::prefix('admin')->middleware(['auth', 'role:admin', 'account.active'])->group(function () {
     Route::get('/dashboard', AdminDashboardController::class)->name('admin.dashboard');
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
+    Route::get('/students/{user}', [AdminStudentController::class, 'show'])->name('admin.students.show');
+    Route::patch('/students/{user}/suspend', [AdminStudentController::class, 'suspend'])->name('admin.students.suspend');
+    Route::patch('/students/{user}/activate', [AdminStudentController::class, 'activate'])->name('admin.students.activate');
 });
