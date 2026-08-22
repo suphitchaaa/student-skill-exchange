@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ExchangeRequestController as AdminExchangeRequestController;
+use App\Http\Controllers\Admin\SkillController as AdminSkillController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -56,4 +58,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin', 'account.active'])->gr
     Route::get('/students/{user}', [AdminStudentController::class, 'show'])->name('admin.students.show');
     Route::patch('/students/{user}/suspend', [AdminStudentController::class, 'suspend'])->name('admin.students.suspend');
     Route::patch('/students/{user}/activate', [AdminStudentController::class, 'activate'])->name('admin.students.activate');
+    Route::get('/skills', [AdminSkillController::class, 'index'])->name('admin.skills.index');
+    Route::get('/skills/create', [AdminSkillController::class, 'create'])->name('admin.skills.create');
+    Route::post('/skills', [AdminSkillController::class, 'store'])->name('admin.skills.store');
+    Route::get('/skills/{skill}/edit', [AdminSkillController::class, 'edit'])->name('admin.skills.edit');
+    Route::match(['put', 'patch'], '/skills/{skill}', [AdminSkillController::class, 'update'])->name('admin.skills.update');
+    Route::delete('/skills/{skill}', [AdminSkillController::class, 'destroy'])->name('admin.skills.destroy');
+    Route::get('/exchange-requests', [AdminExchangeRequestController::class, 'index'])->name('admin.exchange-requests.index');
+    Route::get('/exchange-requests/{exchangeRequest}', [AdminExchangeRequestController::class, 'show'])->name('admin.exchange-requests.show');
 });

@@ -35,6 +35,12 @@
                         <a class="nav-link {{ request()->routeIs('admin.students.*') ? 'active' : '' }}" href="{{ route('admin.students.index') }}">
                             <i class="bi bi-person-lines-fill me-2" aria-hidden="true"></i>จัดการนักศึกษา
                         </a>
+                        <a class="nav-link {{ request()->routeIs('admin.skills.*') ? 'active' : '' }}" href="{{ route('admin.skills.index') }}">
+                            <i class="bi bi-tags me-2" aria-hidden="true"></i>จัดการทักษะ
+                        </a>
+                        <a class="nav-link {{ request()->routeIs('admin.exchange-requests.*') ? 'active' : '' }}" href="{{ route('admin.exchange-requests.index') }}">
+                            <i class="bi bi-list-check me-2" aria-hidden="true"></i>ติดตามคำขอแลกเปลี่ยน
+                        </a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="mt-3">
                         @csrf
