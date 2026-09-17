@@ -17,6 +17,13 @@ class DemoSeeder extends Seeder
             $category => Skill::query()->create(['name' => 'ทักษะสาธิต '.($index + 1), 'category' => $category, 'is_active' => true]),
         ]);
 
+        User::factory()->create([
+            'name' => 'ผู้ดูแลระบบสาธิต',
+            'student_code' => 'DEMOA001',
+            'email' => 'demo.admin@example.com',
+            'role' => 'admin',
+        ]);
+
         $students = collect(range(1, 12))->map(function (int $number) use ($skills): User {
             $student = User::factory()->create([
                 'name' => 'นักศึกษาสาธิต '.str_pad((string) $number, 2, '0', STR_PAD_LEFT),
