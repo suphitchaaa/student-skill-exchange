@@ -51,6 +51,15 @@ Admin Skill ใช้ Soft Delete เท่านั้น
 ตรวจภายใน Transaction + lockForUpdate  
 ห้ามเพิ่ม Partial Unique Index
 
+## SD-7 Student Search or Add Skill
+
+- นักศึกษาค้นหาและเลือกทักษะ active เดิม หรือสร้างชื่อใหม่ลง `skills` แล้วผูกกับ `user_skills.skill_id` ได้ทันที ไม่รอ Admin อนุมัติ
+- ชื่อใหม่ใช้ `category = ทั่วไป` และ `is_active = true`; ปรากฏในการค้นหา โปรไฟล์สาธารณะ และใช้กับคำขอแลกเปลี่ยนตามประเภททักษะได้ทันที
+- `skills.normalized_name` required และ UNIQUE ครอบคลุม inactive/soft-deleted; ตัดช่องว่าง Unicode รอบชื่อ รวมช่องว่างภายใน และทำ Unicode case folding
+- ไม่ถือว่าคำแปลหรือคำพ้องความหมายเป็นทักษะเดียวกันโดยอัตโนมัติ
+- ชื่อที่ชน inactive/soft-deleted ห้ามนักศึกษาสร้างซ้ำหรือเปิดใช้งานเอง
+- Admin ยังจัดการทักษะส่วนกลาง; ไม่มี creator/source/moderation field, merge workflow หรือ historical-name snapshot ในฟีเจอร์นี้
+
 ## Approved Clarifications
 
 - `student_profiles`: ทุกฟิลด์นอกจาก user_id nullable

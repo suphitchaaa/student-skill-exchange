@@ -4,14 +4,14 @@
 @section('page-title', 'จัดการนักศึกษา')
 
 @section('content')
-    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-4">
+    <div class="content-heading d-flex flex-wrap justify-content-between align-items-start gap-2">
         <div>
-            <h1 class="h4 mb-1">จัดการนักศึกษา</h1>
+            <h1 class="mb-1">จัดการนักศึกษา</h1>
             <p class="text-secondary mb-0">ค้นหา ดูข้อมูล และจัดการสถานะบัญชีนักศึกษา</p>
         </div>
     </div>
 
-    <form method="GET" action="{{ route('admin.students.index') }}" class="campus-card bg-white p-3 mb-3">
+    <form method="GET" action="{{ route('admin.students.index') }}" class="campus-card bg-white admin-filter-panel">
         <div class="row g-2 align-items-end">
             <div class="col-12 col-lg-4">
                 <label for="student-search" class="form-label">ค้นหา</label>
@@ -50,7 +50,7 @@
         </div>
     </form>
 
-    <div class="campus-card bg-white p-3">
+    <div class="campus-card bg-white admin-table-panel">
         <div class="table-responsive">
             <table class="table align-middle mb-0">
                 <thead>

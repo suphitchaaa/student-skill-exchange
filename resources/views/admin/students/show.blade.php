@@ -39,7 +39,7 @@
                 @else
                     <form method="POST" action="{{ route('admin.students.activate', $student) }}" onsubmit="return confirm('ยืนยันการเปิดใช้งานบัญชีนักศึกษาคนนี้หรือไม่?')">
                         @csrf @method('PATCH')
-                        <button class="btn btn-success" type="submit"><i class="bi bi-person-check me-1" aria-hidden="true"></i>เปิดใช้งานบัญชี</button>
+                        <button class="btn btn-primary" type="submit"><i class="bi bi-person-check me-1" aria-hidden="true"></i>เปิดใช้งานบัญชี</button>
                     </form>
                 @endif
             </section>

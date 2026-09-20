@@ -6,6 +6,8 @@ use App\Http\Requests\StoreUserSkillRequest;
 use App\Http\Requests\UpdateUserSkillRequest;
 use App\Models\Skill;
 use App\Models\UserSkill;
+use App\Services\UserSkillService;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +16,8 @@ use Illuminate\View\View;
 
 class UserSkillController extends Controller
 {
+    private const DELETE_REFERENCED_MESSAGE = 'ไม่สามารถลบทักษะนี้ได้ เนื่องจากถูกใช้ในคำขอแลกเปลี่ยนหรือประวัติแล้ว';
+
     public function index(Request $request): View
     {
         $skillType = $request->query('type', 'offered');
@@ -29,13 +33,9 @@ class UserSkillController extends Controller
         ]);
     }
 
-    public function store(StoreUserSkillRequest $request): RedirectResponse
+    public function store(StoreUserSkillRequest $request, UserSkillService $service): RedirectResponse
     {
-        try {
-            $request->user()->userSkills()->create($request->validated());
-        } catch (UniqueConstraintViolationException) {
-            return back()->withInput()->withErrors(['skill_id' => 'คุณเพิ่มทักษะนี้ในประเภทที่เลือกไว้แล้ว']);
-        }
+        $service->add($request->user(), $request->validated());
 
         return to_route('user-skills.index', ['type' => $request->validated('skill_type')])
             ->with('success', 'เพิ่มทักษะเรียบร้อยแล้ว');
@@ -59,7 +59,24 @@ class UserSkillController extends Controller
     {
         Gate::authorize('delete', $userSkill);
         $skillType = $userSkill->skill_type;
-        $userSkill->delete();
+
+        // เก็บทักษะที่ถูกอ้างอิงไว้เพื่อรักษาประวัติคำขอแลกเปลี่ยน
+        if ($userSkill->sentExchangeRequests()->exists() || $userSkill->receivedExchangeRequests()->exists()) {
+            return to_route('user-skills.index', ['type' => $skillType])
+                ->with('error', self::DELETE_REFERENCED_MESSAGE);
+        }
+
+        try {
+            $userSkill->delete();
+        } catch (QueryException $exception) {
+            // คำขอที่ถูกสร้างหลังตรวจอาจทำให้ FK ปฏิเสธการลบ
+            if (($exception->errorInfo[0] ?? null) !== '23000' || (int) ($exception->errorInfo[1] ?? 0) !== 1451) {
+                throw $exception;
+            }
+
+            return to_route('user-skills.index', ['type' => $skillType])
+                ->with('error', self::DELETE_REFERENCED_MESSAGE);
+        }
 
         return to_route('user-skills.index', ['type' => $skillType])->with('success', 'ลบทักษะเรียบร้อยแล้ว');
     }

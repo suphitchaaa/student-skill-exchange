@@ -28,7 +28,11 @@ DB และ Filesystem ไม่ใช่ Atomic Transaction เดียวก
 
 ## Skills
 
-`My Skills → Offered/Wanted Tab → Add/Edit/Delete → Validate Active Skill + Ownership → Save`
+`My Skills → Offered/Wanted Tab → ค้นหาทักษะที่ใช้งานได้ → เลือกทักษะเดิมหรือเพิ่มชื่อใหม่ → Validate + Ownership → Save`
+
+- ชื่อใหม่สร้างแถวใน `skills` หมวดหมู่ `ทั่วไป` และ `is_active = true` แล้วอ้างอิงจาก `user_skills.skill_id` ได้ทันที ไม่รอ Admin อนุมัติ
+- ชื่อที่ Normalize แล้วตรงกับทักษะ inactive หรือ soft-deleted ห้ามนักศึกษาสร้างซ้ำหรือเปิดใช้งานเอง
+- ทักษะใหม่ที่เพิ่มสำเร็จใช้กับ offered/wanted, การค้นหา, โปรไฟล์สาธารณะ และคำขอแลกเปลี่ยนได้ทันทีตามประเภททักษะ
 
 ## Search
 

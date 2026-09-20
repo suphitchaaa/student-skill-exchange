@@ -14,6 +14,7 @@ English: Student Skill Exchange
 - Upload / Replace / Delete รูปโปรไฟล์
 - CRUD ทักษะที่สอนได้
 - CRUD ทักษะที่ต้องการเรียน
+- ค้นหาทักษะที่มีอยู่หรือเพิ่มชื่อทักษะใหม่เป็นทักษะของตนเองได้ทันทีโดยไม่รอ Admin อนุมัติ
 - ค้นหานักศึกษาด้วยชื่อ ทักษะ คณะ ชั้นปี
 - ดู Public Student Profile
 - ส่งคำขอแลกเปลี่ยน
@@ -54,6 +55,7 @@ Admin ห้าม Accept หรือ Reject แทนนักศึกษา
 - Student Profile
 - Profile Image Management
 - Offered/Wanted Skill CRUD
+- Student Skill Search/Add ลงรายการทักษะส่วนกลาง โดยทักษะใหม่ใช้งานได้ทันที
 - Student Search
 - Public Student Profile
 - Exchange Request Workflow

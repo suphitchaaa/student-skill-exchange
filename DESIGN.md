@@ -2,19 +2,20 @@
 
 ## 1. Design Direction
 
-`Friendly Campus / Soft Playful Academic`
+`MotionSite-inspired University Dashboard`
 
 ระบบมหาวิทยาลัยสมัยใหม่ที่ให้ความรู้สึก:
 
-- เป็นมิตรกับนักศึกษา
-- สดใส แต่ไม่ฉูดฉาด
-- นุ่มนวลและเข้าถึงง่าย
-- มีโครงสร้างข้อมูลชัดเจน
-- ใช้งานจริงได้ง่าย
-- ดูเป็นระบบมหาวิทยาลัยที่ออกแบบโดยมนุษย์
-- มีความ playful เฉพาะจุด โดยไม่ทำให้ดูเป็นแอปเด็ก
-- Student UI มีความสนุกได้มากกว่า Admin UI
-- Admin UI ต้องเน้นความชัดเจนและการอ่านข้อมูล
+- Premium และร่วมสมัย
+- มีลำดับชั้นของข้อมูลที่ชัดและมี contrast สูง
+- ใช้ composition แบบ editorial ที่ตั้งใจออกแบบ
+- Dynamic อย่างมีวินัย และใช้ motion เฉพาะเมื่อช่วยการรับรู้
+- เป็นระบบมหาวิทยาลัยที่มีโครงสร้าง ใช้งานง่าย และออกแบบโดยมนุษย์
+- Student UI แสดงบุคลิกได้มากกว่าโดยไม่กลายเป็น Social Media หรือ AI SaaS
+- Admin UI สงบ กระชับ และเน้นการอ่านข้อมูล
+
+ใช้แนวทางอ้างอิงจาก MotionSite ในระดับ mood, hierarchy และ composition เท่านั้น
+ห้ามคัดลอก brand, layout, copywriting, feature หรือ source code แบบ 1:1
 
 UX/UI รอบนี้เป็นการปรับ Presentation เท่านั้น
 
@@ -69,10 +70,10 @@ Reference ใช้เพื่อกำหนด:
 
 - Left Sidebar + Main Content
 - Desktop Dashboard ที่มีโครงสร้างชัด
-- Welcome / Hero Section
-- Rounded Cards
-- Soft Pastel Surfaces
-- Clear Information Hierarchy
+- Compact welcome section
+- Structured surfaces with controlled radius
+- Warm neutral surfaces with restrained pastel accents
+- Strong information hierarchy
 - Profile Card ที่อ่านง่าย
 - Summary Cards ที่แยกข้อมูลเป็นหมวด
 - List / Activity / Request Card ที่สแกนข้อมูลได้เร็ว
@@ -81,23 +82,18 @@ Reference ใช้เพื่อกำหนด:
 
 ใช้แนวคิด:
 
-- Friendly Student-focused UI
-- Soft pastel skill/status tags
-- Lightweight illustration
-- Simple decorative geometric shapes
-- Spacious layouts
-- Rounded buttons and controls
-- Soft shadows
-- Thin borders
+- Editorial spacing and deliberate alignment
+- High-contrast typography for page and data hierarchy
+- Soft pastel accents used to support real content and status
+- Controlled borders and restrained shadows
+- Motion only when it clarifies an existing interaction; no decorative animation and no new JavaScript behavior
 
 ### Student UI
 
 อนุญาตให้:
-- สดใสกว่า
-- ใช้ pastel accent มากกว่า
-- มี illustration แบบเรียบง่าย
-- มี decorative shape ขนาดเล็ก
-- ใช้ card ที่มีบุคลิกมากขึ้น
+- expressive กว่าในระดับ composition และ accent
+- ใช้ pastel surface เพื่อแยกข้อมูลจริงได้มากกว่า
+- ใช้ card ที่มีบุคลิกชัด แต่ยังเป็น information component
 
 ### Admin UI
 
@@ -117,11 +113,18 @@ Reference ใช้เพื่อกำหนด:
 
 | Token | HEX | Usage |
 |---|---|---|
-| Mint Cream | `#F6FFFA` | Main background / soft surface |
-| Soft Linen | `#E6E6DB` | Secondary background / muted surface |
-| Ash Grey | `#A0BBB2` | Secondary accent / muted UI |
-| Petal Rouge | `#DA7D91` | Primary accent / CTA / highlight |
-| Reddish Brown | `#8B4C41` | Strong text / active state / deep accent |
+| Warm Ivory | `#F8F5EF` | Main application background |
+| Soft White | `#FFFDFC` | Primary card and control surface |
+| Deep Ink | `#221E1F` | Main text and high-contrast hierarchy |
+| Reddish Brown | `#8B4C41` | Deep accent, active state, and strong anchor |
+| Petal Rose | `#D96F89` | Primary action and restrained highlight |
+| Blush | `#F7E5EA` | Student accent surface |
+| Muted Sage | `#A3B9AE` | Secondary accent and muted UI |
+| Pale Sage | `#E8F0EC` | Soft data and status surface |
+| Soft Lavender | `#D8D0EE` | Limited summary and completed-status surface |
+| Butter | `#F1D57A` | Pending-status and limited highlight surface |
+| Warm Grey | `#746E6B` | Secondary text |
+| Warm Border | `#E6DED8` | Borders and dividers |
 
 ### Supporting Colors
 
@@ -129,15 +132,12 @@ Reference ใช้เพื่อกำหนด:
 
 | Token | Suggested HEX | Usage |
 |---|---|---|
-| Soft Lavender | `#DDD7F5` | Summary cards / soft tags |
-| Butter Yellow | `#F6D978` | Highlight / summary card |
-| Soft White | `#FFFFFF` | Card surface |
-| Ink | `#2F2A2A` | Main text |
-| Muted Ink | `#6F6868` | Secondary text |
-| Border | `#E7E1DF` | Borders / dividers |
+| Blush | `#F7E5EA` | Student accent surface / soft tag |
+| Pale Sage | `#E8F0EC` | Soft data surface / accepted status |
+| Soft Lavender | `#D8D0EE` | Summary card / completed status |
+| Butter | `#F1D57A` | Pending status / limited highlight |
 
-สี Supporting สามารถปรับเล็กน้อยระหว่าง implementation ได้
-แต่ต้องคง Mood เดิม
+ใช้สีใน palette ที่ล็อกไว้เท่านั้น
 
 ---
 
@@ -149,23 +149,23 @@ Reference ใช้เพื่อกำหนด:
 
 ```css
 :root {
-    --color-bg: #F6FFFA;
-    --color-surface: #FFFFFF;
-    --color-surface-soft: #E6E6DB;
+    --color-bg: #F8F5EF;
+    --color-surface: #FFFDFC;
+    --color-surface-soft: #F7E5EA;
 
-    --color-primary: #DA7D91;
-    --color-primary-hover: #C96C80;
+    --color-primary: #D96F89;
+    --color-primary-hover: #C75D78;
 
-    --color-secondary: #A0BBB2;
+    --color-secondary: #A3B9AE;
     --color-accent-dark: #8B4C41;
 
-    --color-text: #2F2A2A;
-    --color-text-muted: #6F6868;
+    --color-text: #221E1F;
+    --color-text-muted: #746E6B;
 
-    --color-border: #E7E1DF;
+    --color-border: #E6DED8;
 
-    --color-lavender: #DDD7F5;
-    --color-yellow: #F6D978;
+    --color-lavender: #D8D0EE;
+    --color-yellow: #F1D57A;
 }
 ```
 
@@ -178,8 +178,8 @@ Reference ใช้เพื่อกำหนด:
 Main application background:
 
 ```text
-Mint Cream
-#F6FFFA
+Warm Ivory
+#F8F5EF
 ```
 
 หรือ white / off-white ตามบริบท
@@ -189,18 +189,18 @@ Mint Cream
 หลัก:
 
 ```text
-#FFFFFF
+#FFFDFC
 ```
 
-ใช้ Soft Linen / Mint / Lavender / Yellow เป็น card accent ได้บางใบ
+ใช้ Blush / Pale Sage / Lavender / Butter เป็น card accent ได้บางใบ โดยต้องผูกกับข้อมูลจริง
 
 ### Primary Action
 
 ใช้:
 
 ```text
-Petal Rouge
-#DA7D91
+Petal Rose
+#D96F89
 ```
 
 ### Deep Accent
@@ -218,10 +218,10 @@ Reddish Brown
 - Strong text
 - Important visual anchor
 
-### Ash Grey
+### Muted Sage
 
 ใช้กับ:
-- Secondary actions
+- Secondary information surfaces
 - Icon background
 - Muted tags
 - Decorative UI
@@ -234,9 +234,13 @@ Reddish Brown
 
 - อ่านง่าย
 - ดูร่วมสมัย
-- เป็นมิตร
+- มีลำดับชั้นที่ชัด
 - ไม่เหมือน AI landing page
 - ไม่ใช้ decorative font ใน body
+
+### Font Family
+
+ใช้ `Anuphan` สำหรับระบบทั้งหมด โดยใช้ weights `400 / 500 / 600 / 700`
 
 ### Heading
 
@@ -314,12 +318,14 @@ Design ใหม่ใช้ความโค้งมากขึ้น
 Small Control: 8–10px
 Input: 10–12px
 Button: 10–12px
-Card: 16–20px
-Hero Card: 20–24px
+Card: 14–18px
+Compact welcome surface: 18–20px
 Badge / Pill: 999px
 ```
 
-ห้ามทุกอย่างกลมจนดูเป็น Mobile App ทั้งระบบ
+ใช้ radius แบบ pill เฉพาะ status badge หรือ tag ที่มีความหมายจริง ห้ามใช้กับ generic UI element
+
+ห้ามทุกอย่างกลมจนดูเป็น Mobile App ทั้งระบบหรือ pill ทุกองค์ประกอบ
 
 ---
 
@@ -357,9 +363,7 @@ Default:
 - ไม่ใช้ Neon
 - ไม่ใช้ Blur Panel
 
-หาก Approved UX/UI Rules อนุญาต gradient ในอนาคต ใช้ได้เฉพาะ subtle decorative background และต้องไม่ลด readability
-
-Approved Rules มีลำดับสูงกว่า DESIGN.md
+`docs/04-UX-UI-RULES.md` ห้าม gradient และมีลำดับสูงกว่า DESIGN.md
 
 ---
 
@@ -415,7 +419,7 @@ Student Dashboard ควรเป็นหน้าที่มีบุคล�
 Structure แนะนำ:
 
 ```text
-Welcome / Hero
+Compact welcome surface
 ↓
 Summary Cards
 ↓
@@ -427,12 +431,11 @@ Relevant Skills / Requests
 ### Welcome Card
 
 สามารถใช้:
-- Soft background
+- Warm soft background with clear text contrast
 - Greeting
 - Supporting text
-- Simple illustration
 
-ห้าม illustration ขนาดใหญ่จนแย่งข้อมูล
+ห้าม oversized hero, decorative content ที่ไม่มีข้อมูลจริง หรือ CTA ที่ไม่มี feature รองรับ
 
 ### Summary Cards
 
@@ -445,10 +448,10 @@ Relevant Skills / Requests
 - Soft accent background
 
 สามารถใช้:
-- Mint
-- Petal Rouge tint
-- Lavender
-- Butter Yellow
+- Blush
+- Pale Sage
+- Soft Lavender
+- Butter
 
 แต่ต้องยังอ่าน text ได้ชัด
 
@@ -491,7 +494,7 @@ Skills UI ต้องทำให้ Offered / Wanted แตกต่างก�
 แนะนำโทน:
 
 ```text
-Mint / Ash Grey
+Pale Sage / Muted Sage
 ```
 
 ### Wanted
@@ -499,7 +502,7 @@ Mint / Ash Grey
 แนะนำโทน:
 
 ```text
-Petal Rouge Tint / Lavender
+Blush / Soft Lavender
 ```
 
 Skill tag ต้อง:
@@ -570,11 +573,11 @@ Status colors ต้อง consistent ทุกหน้า
 ตัวอย่าง semantic:
 
 ```text
-Pending    → Butter Yellow
-Accepted   → Mint / Green Tint
-Rejected   → Soft Rouge
-Cancelled  → Ash / Neutral
-Completed  → Lavender / Deep Mint
+Pending    → Butter
+Accepted   → Pale Sage
+Rejected   → Blush / red semantic
+Cancelled  → Warm Grey / Neutral
+Completed  → Soft Lavender
 ```
 
 ห้ามใช้สีอย่างเดียวเป็นตัวบอกสถานะ ต้องมี text label เสมอ
@@ -585,10 +588,10 @@ Completed  → Lavender / Deep Mint
 
 ### Primary
 
-Petal Rouge
+Petal Rose
 
 ```text
-#DA7D91
+#D96F89
 ```
 
 ### Secondary
@@ -597,7 +600,7 @@ White / Soft surface + Border
 
 ### Destructive
 
-ใช้ red semantic ที่อ่านชัด ไม่ใช้ Petal Rouge แทน destructive ทุกกรณี
+ใช้ red semantic ที่อ่านชัด ไม่ใช้ Petal Rose แทน destructive ทุกกรณี
 
 ### Button Rules
 
@@ -630,7 +633,7 @@ Thin border
 Clear focus state
 ```
 
-Focus สามารถใช้ Petal Rouge หรือ Ash Grey tint
+Focus สามารถใช้ Petal Rose หรือ Muted Sage tint
 
 ---
 
@@ -710,10 +713,12 @@ Rules:
 
 ใช้ได้ใน:
 
-- Student Dashboard Hero
 - Empty State
 - Onboarding-like empty section
-- Small decorative corner
+- เนื้อหาประกอบที่มีอยู่จริงและไม่ใช่ hero decoration
+
+Student Dashboard ต้องใช้ compact functional welcome surface ที่นำด้วยลำดับชั้นข้อมูล
+ห้าม decorative hero illustration หรือ oversized hero
 
 ห้าม:
 
@@ -731,18 +736,14 @@ Admin ต้องใช้ illustration อย่างจำกัด
 
 ## 25. Decorative Shapes
 
-อนุญาต:
-- Circle
-- Rounded rectangle
-- Simple starburst แบบ minimal
-- Organic shape ขนาดเล็ก
+ใช้ structural composition แทน decorative floating shapes:
 
-ต้อง:
+- spacing และ alignment ที่ตั้งใจ
+- typography hierarchy
+- border และ surface ที่มีโครงสร้าง
+- intentional color blocks ที่ผูกกับเนื้อหาจริง
 
-- opacity ต่ำ
-- ไม่บัง text
-- ไม่ลด contrast
-- ไม่ทำให้ระบบดูเหมือน landing page
+ห้ามใช้ starburst, organic shape, blob หรือ sparkle เป็น decoration
 
 ---
 
@@ -820,13 +821,13 @@ Pastel color ต้องไม่ถูกใช้เป็น text color ห�
 ### Student
 
 ```text
-Friendly
-Soft
+Expressive
 Warm
-Playful
-Pastel
-Rounded
-Welcoming
+Editorial
+Dynamic อย่างมีวินัย
+Pastel accents
+Structured
+Student-centered
 ```
 
 ### Admin
@@ -858,7 +859,7 @@ Professional
 - Neon
 - 3D illustration
 - Floating random blobs
-- Gradient-heavy backgrounds
+- Gradient backgrounds
 - Emoji
 - Mixed icon libraries
 - Excessive animation
@@ -1009,33 +1010,40 @@ Regression / Final Review
 
 Student Skill Exchange หลัง UX/UI Refinement ต้องมีภาพรวมว่า:
 
-> ระบบมหาวิทยาลัยที่เป็นมิตร สดใส และใช้งานง่าย
-> ใช้ soft pastel palette และ rounded card อย่างมีวินัย
-> มีความ playful พอดีสำหรับนักศึกษา
-> แต่ยังมีโครงสร้างข้อมูลที่ชัดเจนและน่าเชื่อถือ
-> Admin อ่านข้อมูลและทำงานได้รวดเร็ว
+> ระบบมหาวิทยาลัยที่ทันสมัย มีลำดับชั้นข้อมูลชัด และใช้งานง่าย
+> ใช้ warm neutral palette และ pastel accent อย่างมีวินัย
+> มี editorial composition ที่มีบุคลิกในฝั่งนักศึกษา
+> แต่ยังมีโครงสร้างข้อมูลที่น่าเชื่อถือ
+> Admin อ่านข้อมูลและทำงานได้รวดเร็วในบรรยากาศที่สงบ
 > ทุกหน้าดูเป็นระบบเดียวกัน
 > และไม่ดูเหมือน Generic AI SaaS Template
 
 Primary visual identity:
 
 ```text
-Friendly Campus
-Soft Pastel
-Clear Information Hierarchy
-Rounded but Structured
-Student-focused
-Academic Utility
+MotionSite-inspired University Dashboard
+Premium editorial composition
+Strong information hierarchy
+Warm contrast
+Structured university UX
+Student-centered
 ```
 
 Palette:
 
 ```text
-Mint Cream     #F6FFFA
-Soft Linen     #E6E6DB
-Ash Grey       #A0BBB2
-Petal Rouge    #DA7D91
+Warm Ivory     #F8F5EF
+Soft White     #FFFDFC
+Deep Ink       #221E1F
 Reddish Brown  #8B4C41
+Petal Rose     #D96F89
+Blush          #F7E5EA
+Muted Sage     #A3B9AE
+Pale Sage      #E8F0EC
+Soft Lavender  #D8D0EE
+Butter         #F1D57A
+Warm Grey      #746E6B
+Warm Border    #E6DED8
 ```
 
 UX/UI Refinement must improve presentation without changing the completed EC-12 functional baseline.

@@ -4,12 +4,12 @@
 @section('page-title', 'ค้นหาทักษะ')
 
 @section('content')
-    <div class="mb-4">
-        <h1 class="h4 mb-1">ค้นหานักศึกษา</h1>
+    <div class="content-heading">
+        <h1 class="mb-1">ค้นหานักศึกษา</h1>
         <p class="text-secondary mb-0">ค้นหานักศึกษาที่มีทักษะและความสนใจตรงกับคุณ</p>
     </div>
 
-    <section class="campus-card bg-white p-4 mb-4">
+    <section class="campus-card bg-white student-filter-panel mb-4">
         <form action="{{ route('students.index') }}" method="GET">
             <div class="row g-3 align-items-end">
                 <div class="col-12 col-lg-4">
@@ -51,7 +51,7 @@
     </section>
 
     @if ($students->isEmpty())
-        <section class="campus-card bg-white p-5 text-center">
+        <section class="campus-card bg-white content-empty-state text-center">
             <i class="bi bi-person-x fs-2 text-secondary" aria-hidden="true"></i>
             <h2 class="h5 mt-3">ไม่พบนักศึกษาตามเงื่อนไข</h2>
             <p class="text-secondary">ลองเปลี่ยนคำค้นหาหรือรีเซ็ตตัวกรองเพื่อดูนักศึกษาทั้งหมด</p>
@@ -61,7 +61,7 @@
         <div class="row g-3">
             @foreach ($students as $student)
                 <div class="col-12 col-md-6 col-xl-4">
-                    <article class="campus-card bg-white h-100 p-4 d-flex flex-column">
+                    <article class="campus-card bg-white student-result-card h-100 d-flex flex-column">
                         <div class="d-flex align-items-start gap-3 mb-3">
                             @if ($student->studentProfile?->profile_image)
                                 <img class="student-avatar" src="{{ asset('storage/'.ltrim($student->studentProfile->profile_image, '/')) }}" alt="รูปโปรไฟล์ของ {{ $student->name }}">

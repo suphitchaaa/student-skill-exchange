@@ -23,6 +23,11 @@ class UserSkill extends Model
         return $this->belongsTo(Skill::class);
     }
 
+    public function historicalSkill()
+    {
+        return $this->belongsTo(Skill::class, 'skill_id')->withTrashed();
+    }
+
     public function sentExchangeRequests()
     {
         return $this->hasMany(ExchangeRequest::class, 'sender_user_skill_id');

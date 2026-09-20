@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -52,7 +53,11 @@ class SkillController extends Controller
 
     public function store(StoreSkillRequest $request): RedirectResponse
     {
-        Skill::query()->create($request->validated());
+        try {
+            Skill::query()->create($request->validated());
+        } catch (UniqueConstraintViolationException $exception) {
+            return $this->handleDuplicateName($exception);
+        }
 
         return to_route('admin.skills.index')->with('status', 'เพิ่มทักษะเรียบร้อยแล้ว');
     }
@@ -69,7 +74,11 @@ class SkillController extends Controller
 
     public function update(UpdateSkillRequest $request, Skill $skill): RedirectResponse
     {
-        $skill->update($request->validated());
+        try {
+            $skill->update($request->validated());
+        } catch (UniqueConstraintViolationException $exception) {
+            return $this->handleDuplicateName($exception);
+        }
 
         return to_route('admin.skills.index')->with('status', 'แก้ไขทักษะเรียบร้อยแล้ว');
     }
@@ -80,5 +89,16 @@ class SkillController extends Controller
         $skill->delete();
 
         return to_route('admin.skills.index')->with('status', 'ปิดการใช้งานทักษะเรียบร้อยแล้ว');
+    }
+
+    private function handleDuplicateName(UniqueConstraintViolationException $exception): RedirectResponse
+    {
+        // ระหว่าง validation กับบันทึก อาจมีชื่อเดียวกันถูกเพิ่มจากอีกคำขอ
+        if (! str_contains($exception->getMessage(), 'skills_normalized_name_unique')
+            && ! str_contains($exception->getMessage(), 'skills.normalized_name')) {
+            throw $exception;
+        }
+
+        return back()->withInput()->withErrors(['name' => 'ชื่อทักษะนี้มีอยู่แล้ว']);
     }
 }

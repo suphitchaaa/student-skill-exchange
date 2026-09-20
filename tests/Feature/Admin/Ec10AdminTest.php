@@ -46,6 +46,105 @@ class Ec10AdminTest extends TestCase
         $this->assertTrue($admin->exists);
     }
 
+    public function test_admin_create_rejects_normalized_duplicates_including_inactive_and_deleted_skills(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $active = Skill::factory()->create(['name' => 'Digital Art']);
+        $inactive = Skill::factory()->create(['name' => 'Garden Design', 'is_active' => false]);
+        $deleted = Skill::factory()->create(['name' => 'Paper Craft']);
+        $deleted->delete();
+
+        foreach (['  DIGITAL   ART  ', ' garden design ', 'PAPER CRAFT'] as $name) {
+            $this->actingAs($admin)->post(route('admin.skills.store'), [
+                'name' => $name,
+                'category' => 'ทั่วไป',
+                'is_active' => 1,
+            ])->assertSessionHasErrors(['name' => 'ชื่อทักษะนี้มีอยู่แล้ว']);
+        }
+
+        $this->assertDatabaseCount('skills', 3);
+        $this->assertSame('Digital Art', $active->fresh()->name);
+        $this->assertSame('Garden Design', $inactive->fresh()->name);
+        $this->assertSoftDeleted('skills', ['id' => $deleted->id]);
+    }
+
+    public function test_admin_rename_rejects_normalized_duplicate_and_allows_own_normalized_name(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $skill = Skill::factory()->create(['name' => 'Drawing Basics']);
+        $other = Skill::factory()->create(['name' => 'Water Color']);
+
+        $this->actingAs($admin)->put(route('admin.skills.update', $skill), [
+            'name' => ' WATER   COLOR ',
+            'category' => 'ศิลปะ',
+            'is_active' => 0,
+        ])->assertSessionHasErrors(['name' => 'ชื่อทักษะนี้มีอยู่แล้ว']);
+
+        $this->assertDatabaseHas('skills', ['id' => $skill->id, 'name' => 'Drawing Basics', 'is_active' => 1]);
+        $this->assertSame('Water Color', $other->fresh()->name);
+
+        $this->actingAs($admin)->put(route('admin.skills.update', $skill), [
+            'name' => ' DRAWING   BASICS ',
+            'category' => 'ศิลปะ',
+            'is_active' => 0,
+        ])->assertRedirect(route('admin.skills.index'));
+
+        $this->assertDatabaseHas('skills', [
+            'id' => $skill->id,
+            'name' => 'DRAWING BASICS',
+            'normalized_name' => 'drawing basics',
+            'category' => 'ศิลปะ',
+            'is_active' => 0,
+        ]);
+    }
+
+    public function test_student_created_skill_appears_in_admin_management(): void
+    {
+        $student = User::factory()->create(['role' => 'student']);
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($student)->post(route('user-skills.store'), [
+            'skill_name' => ' Campus   Sketching ',
+            'skill_type' => 'offered',
+        ])->assertSessionHasNoErrors();
+
+        $skill = Skill::query()->where('normalized_name', 'campus sketching')->firstOrFail();
+        $this->assertDatabaseHas('skills', ['id' => $skill->id, 'category' => 'ทั่วไป', 'is_active' => 1]);
+        $this->actingAs($admin)->get(route('admin.skills.index', ['q' => 'Campus']))
+            ->assertOk()->assertSee('Campus Sketching')->assertSee('ทั่วไป');
+        $this->actingAs($admin)->get(route('admin.skills.edit', $skill))->assertOk()->assertSee('Campus Sketching');
+        $this->actingAs($admin)->put(route('admin.skills.update', $skill), [
+            'name' => 'Campus Sketching',
+            'category' => 'ศิลปะ',
+            'is_active' => 0,
+        ])->assertRedirect(route('admin.skills.index'));
+        $this->assertDatabaseHas('skills', ['id' => $skill->id, 'category' => 'ศิลปะ', 'is_active' => 0]);
+    }
+
+    public function test_completed_request_displays_skill_names_after_admin_soft_delete(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        [$request] = $this->requestFixture('History Sender', 'History Receiver', 'completed', now());
+        $senderSkill = $request->senderUserSkill->skill;
+        $receiverSkill = $request->receiverUserSkill->skill;
+
+        $this->actingAs($admin)->delete(route('admin.skills.destroy', $senderSkill))->assertRedirect(route('admin.skills.index'));
+        $this->actingAs($admin)->delete(route('admin.skills.destroy', $receiverSkill))->assertRedirect(route('admin.skills.index'));
+
+        $this->actingAs($admin)->get(route('admin.exchange-requests.index'))
+            ->assertOk()->assertSee($senderSkill->name)->assertSee($receiverSkill->name);
+        $this->actingAs($admin)->get(route('admin.exchange-requests.show', $request))
+            ->assertOk()->assertSee($senderSkill->name)->assertSee($receiverSkill->name);
+        $this->actingAs($request->sender)->get(route('exchange-requests.index', ['tab' => 'history']))
+            ->assertOk()->assertSee($senderSkill->name)->assertSee($receiverSkill->name);
+        $this->actingAs($request->receiver)->get(route('exchange-requests.show', $request))
+            ->assertOk()->assertSee($senderSkill->name)->assertSee($receiverSkill->name);
+
+        $this->assertDatabaseHas('exchange_requests', ['id' => $request->id, 'status' => 'completed']);
+        $this->assertDatabaseHas('user_skills', ['id' => $request->sender_user_skill_id]);
+        $this->assertDatabaseHas('user_skills', ['id' => $request->receiver_user_skill_id]);
+    }
+
     public function test_case_3_admin_request_monitor_list_and_filters(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);

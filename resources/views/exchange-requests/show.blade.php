@@ -21,9 +21,9 @@
             <dt class="col-sm-4 mb-2">ผู้รับ</dt>
             <dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiver->name }}</dd>
             <dt class="col-sm-4 mb-2">ทักษะของผู้ส่ง</dt>
-            <dd class="col-sm-8 mb-3">{{ $exchangeRequest->senderUserSkill->skill->name }}</dd>
+            <dd class="col-sm-8 mb-3">{{ $exchangeRequest->senderUserSkill->historicalSkill->name }}</dd>
             <dt class="col-sm-4 mb-2">ทักษะของผู้รับ</dt>
-            <dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiverUserSkill->skill->name }}</dd>
+            <dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiverUserSkill->historicalSkill->name }}</dd>
             <dt class="col-sm-4 mb-2">รูปแบบการเรียนรู้</dt>
             <dd class="col-sm-8 mb-3">{{ ['online' => 'ออนไลน์', 'onsite' => 'พบกันที่สถานที่จริง', 'either' => 'ได้ทั้งสองรูปแบบ'][$exchangeRequest->learning_format] }}</dd>
             <dt class="col-sm-4 mb-2">ช่วงเวลาที่สะดวก</dt>
@@ -31,7 +31,7 @@
             <dt class="col-sm-4 mb-2">ข้อความ</dt>
             <dd class="col-sm-8 mb-3">{{ $exchangeRequest->message }}</dd>
             <dt class="col-sm-4 mb-2">สถานะ</dt>
-            <dd class="col-sm-8 mb-0">{{ $statusLabels[$exchangeRequest->status] }}</dd>
+            <dd class="col-sm-8 mb-0"><span class="status-badge status-{{ $exchangeRequest->status }}">{{ $statusLabels[$exchangeRequest->status] }}</span></dd>
         </dl>
     </section>
 

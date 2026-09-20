@@ -6,9 +6,9 @@
     <section class="campus-card bg-white p-4"><dl class="row mb-0">
         <dt class="col-sm-4 mb-2">ผู้ส่ง</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->sender->name }} ({{ $exchangeRequest->sender->email }})</dd>
         <dt class="col-sm-4 mb-2">ผู้รับ</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiver->name }} ({{ $exchangeRequest->receiver->email }})</dd>
-        <dt class="col-sm-4 mb-2">ทักษะของผู้ส่ง</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->senderUserSkill->skill->name }}</dd>
-        <dt class="col-sm-4 mb-2">ทักษะของผู้รับ</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiverUserSkill->skill->name }}</dd>
-        <dt class="col-sm-4 mb-2">สถานะ</dt><dd class="col-sm-8 mb-3">{{ $statusLabels[$exchangeRequest->status] }}</dd>
+        <dt class="col-sm-4 mb-2">ทักษะของผู้ส่ง</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->senderUserSkill->historicalSkill->name }}</dd>
+        <dt class="col-sm-4 mb-2">ทักษะของผู้รับ</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->receiverUserSkill->historicalSkill->name }}</dd>
+        <dt class="col-sm-4 mb-2">สถานะ</dt><dd class="col-sm-8 mb-3"><span class="status-badge status-{{ $exchangeRequest->status }}">{{ $statusLabels[$exchangeRequest->status] }}</span></dd>
         <dt class="col-sm-4 mb-2">รูปแบบการเรียนรู้</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->learning_format }}</dd>
         <dt class="col-sm-4 mb-2">ช่วงเวลาที่สะดวก</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->preferred_schedule }}</dd>
         <dt class="col-sm-4 mb-2">ข้อความ</dt><dd class="col-sm-8 mb-3">{{ $exchangeRequest->message }}</dd>

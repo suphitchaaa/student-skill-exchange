@@ -5,6 +5,14 @@ Read-only Planning เท่านั้น ไม่มีการเขีย
 
 ---
 
+## Approved Skill Contract Delta — FEATURE-SKILL-01B
+
+ทิศทางที่ผู้ใช้อนุมัติภายหลังแผน V2.0: นักศึกษาค้นหาทักษะ active ที่มีอยู่ หรือเพิ่มชื่อทักษะใหม่ลง `skills` แล้วผูกกับ `user_skills.skill_id` ได้ทันที โดยไม่รอ Admin อนุมัติ ทักษะใหม่ใช้หมวดหมู่ `ทั่วไป` และ `is_active = true` จึงปรากฏในการค้นหา โปรไฟล์สาธารณะ และใช้กับคำขอแลกเปลี่ยนตามประเภททักษะได้ทันที
+
+`skills.normalized_name` เป็น required และ UNIQUE ทุกแถวรวม inactive/soft-deleted โดยตัดช่องว่าง Unicode รอบชื่อ รวมช่องว่างภายใน และทำ Unicode case folding ไม่รวมคำแปลหรือคำพ้องความหมาย ชื่อที่ชนรายการ inactive/soft-deleted ต้องไม่ถูกสร้างซ้ำหรือเปิดใช้โดยนักศึกษา Admin ยังจัดการทักษะส่วนกลางตามสิทธิ์เดิม ไม่มีขั้นอนุมัติ, creator/source/moderation field, merge workflow หรือ historical-name snapshot ในฟีเจอร์นี้ รายละเอียดแผน EC เดิมด้านล่างเป็นประวัติแผน ไม่ใช่ข้อห้ามของ delta ที่อนุมัติภายหลัง
+
+---
+
 ## 1. Revision Summary
 
 | # | ประเด็นที่สั่งแก้ | สิ่งที่ผิดในแผนเดิม | สิ่งที่แก้แล้ว | หัวข้อที่ได้รับผลกระทบ |

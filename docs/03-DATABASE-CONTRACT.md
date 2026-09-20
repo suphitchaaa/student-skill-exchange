@@ -46,12 +46,17 @@
 
 - id
 - name
+- normalized_name required, UNIQUE, `utf8mb4_bin`
 - category
 - is_active
 - timestamps
 - deleted_at
 - Soft Deletes
-- indexes: name, category, is_active
+- indexes: name, category, is_active; UNIQUE(normalized_name)
+- `normalized_name`: ตัดช่องว่าง Unicode รอบชื่อ รวมช่องว่างภายในที่ติดกันเป็นหนึ่งช่อง แล้วทำ Unicode case folding; ไม่รวมคำแปลหรือคำพ้องความหมาย
+- UNIQUE ครอบคลุมทุกแถว รวม inactive และ soft-deleted; นักศึกษาไม่สามารถสร้างชื่อซ้ำหรือเปิดใช้รายการเหล่านั้นเอง
+- ทักษะที่นักศึกษาสร้างใช้ `category = ทั่วไป`, `is_active = true` และใช้งานได้ทันทีโดยไม่รอ Admin อนุมัติ
+- ไม่มีฟิลด์ creator/source/moderation และไม่มี historical-name snapshot ในฟีเจอร์นี้
 
 ## user_skills
 

@@ -30,11 +30,11 @@ class ExchangeRequest extends Model
 
     public function senderUserSkill()
     {
-        return $this->belongsTo(UserSkill::class, 'sender_user_skill_id');
+        return $this->belongsTo(UserSkill::class, 'sender_user_skill_id')->with('historicalSkill');
     }
 
     public function receiverUserSkill()
     {
-        return $this->belongsTo(UserSkill::class, 'receiver_user_skill_id');
+        return $this->belongsTo(UserSkill::class, 'receiver_user_skill_id')->with('historicalSkill');
     }
 }

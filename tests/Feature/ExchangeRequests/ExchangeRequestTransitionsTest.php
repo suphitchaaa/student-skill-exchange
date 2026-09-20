@@ -159,8 +159,8 @@ class ExchangeRequestTransitionsTest extends TestCase
     {
         $sender = $this->student('ผู้ส่ง');
         $receiver = $this->student('ผู้รับ');
-        $senderSkill = $this->offeredSkill($sender, 'ทักษะผู้ส่ง');
-        $receiverSkill = $this->offeredSkill($receiver, 'ทักษะผู้รับ');
+        $senderSkill = $this->offeredSkill($sender, "ทักษะผู้ส่ง {$sender->id}");
+        $receiverSkill = $this->offeredSkill($receiver, "ทักษะผู้รับ {$receiver->id}");
         $request = ExchangeRequest::factory()->create(array_merge([
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
