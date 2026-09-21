@@ -145,7 +145,7 @@ class Ec10AdminTest extends TestCase
         $this->assertDatabaseHas('user_skills', ['id' => $request->receiver_user_skill_id]);
     }
 
-    public function test_case_3_admin_request_monitor_list_and_filters(): void
+    public function test_admin_request_monitor_existing_search_and_status_filters_continue_to_work(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         [$first] = $this->requestFixture('Searchable Sender', 'Receiver One', 'pending', now()->subDays(5));
@@ -153,8 +153,74 @@ class Ec10AdminTest extends TestCase
         $this->actingAs($admin)->get(route('admin.exchange-requests.index'))->assertOk()->assertSee('Searchable Sender')->assertSee('Other Sender');
         $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['q' => 'Searchable']))->assertSee('Searchable Sender')->assertDontSee('Other Sender');
         $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['status' => 'accepted']))->assertSee('Other Sender')->assertDontSee('Searchable Sender');
-        $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['date_from' => now()->subDays(2)->toDateString(), 'date_to' => now()->toDateString()]))->assertSee('Other Sender')->assertDontSee('Searchable Sender');
         $this->assertNotSame($first->id, $second->id);
+    }
+
+    public function test_admin_request_monitor_searches_active_and_soft_deleted_skill_names(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        [$historicalRequest] = $this->requestFixture('Historical Skill Sender', 'Historical Skill Receiver', 'completed', now());
+        [$activeRequest] = $this->requestFixture('Active Skill Sender', 'Active Skill Receiver', 'pending', now());
+        $historicalSenderSkill = $historicalRequest->senderUserSkill->skill;
+        $historicalReceiverSkill = $historicalRequest->receiverUserSkill->skill;
+
+        $historicalSenderSkill->delete();
+        $historicalReceiverSkill->delete();
+
+        $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['q' => $historicalSenderSkill->name]))
+            ->assertOk()->assertSee('Historical Skill Sender')->assertDontSee('Active Skill Sender');
+        $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['q' => $historicalReceiverSkill->name]))
+            ->assertOk()->assertSee('Historical Skill Receiver')->assertDontSee('Active Skill Receiver');
+        $this->actingAs($admin)->get(route('admin.exchange-requests.index', ['q' => $activeRequest->senderUserSkill->skill->name]))
+            ->assertOk()->assertSee('Active Skill Sender')->assertDontSee('Historical Skill Sender');
+    }
+
+    public function test_admin_request_monitor_rejects_invalid_date_from_without_server_error(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($admin)
+            ->from(route('admin.exchange-requests.index'))
+            ->get(route('admin.exchange-requests.index', ['date_from' => 'not-a-date']))
+            ->assertRedirect(route('admin.exchange-requests.index'))
+            ->assertSessionHasErrors(['date_from' => 'วันที่เริ่มต้นต้องเป็นวันที่ที่ถูกต้อง']);
+    }
+
+    public function test_admin_request_monitor_rejects_invalid_date_to_without_server_error(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($admin)
+            ->from(route('admin.exchange-requests.index'))
+            ->get(route('admin.exchange-requests.index', ['date_to' => 'not-a-date']))
+            ->assertRedirect(route('admin.exchange-requests.index'))
+            ->assertSessionHasErrors(['date_to' => 'วันที่สิ้นสุดต้องเป็นวันที่ที่ถูกต้อง']);
+    }
+
+    public function test_admin_request_monitor_valid_date_filtering_still_works(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->requestFixture('Outside Date Range', 'Receiver One', 'pending', now()->subDays(5));
+        $this->requestFixture('Inside Date Range', 'Receiver Two', 'accepted', now()->subDay());
+
+        $this->actingAs($admin)->get(route('admin.exchange-requests.index', [
+            'date_from' => now()->subDays(2)->toDateString(),
+            'date_to' => now()->toDateString(),
+        ]))->assertOk()->assertSee('Inside Date Range')->assertDontSee('Outside Date Range');
+    }
+
+    public function test_admin_request_monitor_rejects_reversed_date_range(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($admin)
+            ->from(route('admin.exchange-requests.index'))
+            ->get(route('admin.exchange-requests.index', [
+                'date_from' => '2026-09-21',
+                'date_to' => '2026-09-20',
+            ]))
+            ->assertRedirect(route('admin.exchange-requests.index'))
+            ->assertSessionHasErrors(['date_to' => 'วันที่สิ้นสุดต้องไม่น้อยกว่าวันที่เริ่มต้น']);
     }
 
     public function test_case_4_admin_request_detail_is_read_only_and_shows_full_values(): void

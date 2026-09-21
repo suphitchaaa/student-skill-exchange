@@ -11,6 +11,15 @@ class ExchangeRequestController extends Controller
 {
     public function index(Request $request): View
     {
+        $validated = $request->validate([
+            'date_from' => ['nullable', 'date_format:Y-m-d'],
+            'date_to' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:date_from'],
+        ], [
+            'date_from.date_format' => 'วันที่เริ่มต้นต้องเป็นวันที่ที่ถูกต้อง',
+            'date_to.date_format' => 'วันที่สิ้นสุดต้องเป็นวันที่ที่ถูกต้อง',
+            'date_to.after_or_equal' => 'วันที่สิ้นสุดต้องไม่น้อยกว่าวันที่เริ่มต้น',
+        ]);
+
         $query = ExchangeRequest::query()->with([
             'sender', 'receiver', 'senderUserSkill.skill', 'receiverUserSkill.skill',
         ]);
@@ -20,13 +29,13 @@ class ExchangeRequestController extends Controller
             $query->where(function ($scope) use ($search) {
                 $scope->whereHas('sender', fn ($user) => $user->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"))
                     ->orWhereHas('receiver', fn ($user) => $user->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"))
-                    ->orWhereHas('senderUserSkill.skill', fn ($skill) => $skill->where('name', 'like', "%{$search}%"))
-                    ->orWhereHas('receiverUserSkill.skill', fn ($skill) => $skill->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('senderUserSkill.historicalSkill', fn ($skill) => $skill->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('receiverUserSkill.historicalSkill', fn ($skill) => $skill->where('name', 'like', "%{$search}%"));
             });
         });
         $query->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()));
-        $query->when($request->filled('date_from'), fn ($query) => $query->whereDate('created_at', '>=', $request->date('date_from')));
-        $query->when($request->filled('date_to'), fn ($query) => $query->whereDate('created_at', '<=', $request->date('date_to')));
+        $query->when($validated['date_from'] ?? null, fn ($query, $dateFrom) => $query->whereDate('created_at', '>=', $dateFrom));
+        $query->when($validated['date_to'] ?? null, fn ($query, $dateTo) => $query->whereDate('created_at', '<=', $dateTo));
 
         return view('admin.exchange-requests.index', [
             'requests' => $query->latest()->paginate(15)->withQueryString(),
