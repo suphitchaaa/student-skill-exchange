@@ -227,14 +227,115 @@ class UserSkillCrudTest extends TestCase
     {
         $student = $this->student();
         $userSkill = UserSkill::factory()->for($student)->create(['skill_type' => 'offered']);
+        $replacementSkill = Skill::factory()->create();
+
+        $this->actingAs($student)->put(route('user-skills.update', $userSkill), [
+            'skill_id' => $replacementSkill->id,
+            'skill_type' => 'wanted',
+            'description' => 'แก้ไขรายละเอียดแล้ว',
+        ])->assertRedirectToRoute('user-skills.index', ['type' => 'wanted']);
+
+        $this->assertDatabaseHas('user_skills', [
+            'id' => $userSkill->id,
+            'skill_id' => $replacementSkill->id,
+            'skill_type' => 'wanted',
+            'description' => 'แก้ไขรายละเอียดแล้ว',
+        ]);
+    }
+
+    public function test_referenced_user_skill_cannot_change_skill_id_and_history_keeps_original_skill(): void
+    {
+        $student = $this->student();
+        $receiver = $this->student();
+        $originalSkill = Skill::factory()->create(['name' => 'ทักษะต้นฉบับ']);
+        $replacementSkill = Skill::factory()->create(['name' => 'ทักษะใหม่']);
+        $userSkill = UserSkill::factory()->for($student)->for($originalSkill)->create(['skill_type' => 'offered']);
+        $receiverSkill = UserSkill::factory()->for($receiver)->create(['skill_type' => 'offered']);
+        ExchangeRequest::factory()->create([
+            'sender_id' => $student->id,
+            'receiver_id' => $receiver->id,
+            'sender_user_skill_id' => $userSkill->id,
+            'receiver_user_skill_id' => $receiverSkill->id,
+        ]);
+
+        $this->actingAs($student)->put(route('user-skills.update', $userSkill), [
+            'skill_id' => $replacementSkill->id,
+            'skill_type' => 'offered',
+            'description' => 'พยายามเปลี่ยนทักษะ',
+        ])->assertSessionHasErrors([
+            'skill_id' => UserSkill::REFERENCED_SKILL_LOCKED_MESSAGE,
+        ]);
+
+        $this->assertDatabaseHas('user_skills', [
+            'id' => $userSkill->id,
+            'skill_id' => $originalSkill->id,
+            'skill_type' => 'offered',
+        ]);
+        $this->actingAs($student)->get(route('exchange-requests.index', ['tab' => 'sent']))
+            ->assertOk()
+            ->assertSee('ทักษะต้นฉบับ')
+            ->assertDontSee('ทักษะใหม่');
+    }
+
+    public function test_referenced_user_skill_cannot_change_skill_type(): void
+    {
+        $sender = $this->student();
+        $student = $this->student();
+        $senderSkill = UserSkill::factory()->for($sender)->create(['skill_type' => 'offered']);
+        $userSkill = UserSkill::factory()->for($student)->create(['skill_type' => 'offered']);
+        ExchangeRequest::factory()->create([
+            'sender_id' => $sender->id,
+            'receiver_id' => $student->id,
+            'sender_user_skill_id' => $senderSkill->id,
+            'receiver_user_skill_id' => $userSkill->id,
+        ]);
 
         $this->actingAs($student)->put(route('user-skills.update', $userSkill), [
             'skill_id' => $userSkill->skill_id,
+            'skill_type' => 'wanted',
+        ])->assertSessionHasErrors([
+            'skill_type' => UserSkill::REFERENCED_TYPE_LOCKED_MESSAGE,
+        ]);
+
+        $this->assertDatabaseHas('user_skills', [
+            'id' => $userSkill->id,
+            'skill_id' => $userSkill->skill_id,
             'skill_type' => 'offered',
-            'description' => 'แก้ไขรายละเอียดแล้ว',
+        ]);
+    }
+
+    public function test_referenced_soft_deleted_skill_remains_readable_and_allows_description_update(): void
+    {
+        $student = $this->student();
+        $receiver = $this->student();
+        $skill = Skill::factory()->create(['name' => 'ทักษะประวัติ']);
+        $userSkill = UserSkill::factory()->for($student)->for($skill)->create(['skill_type' => 'offered']);
+        $receiverSkill = UserSkill::factory()->for($receiver)->create(['skill_type' => 'offered']);
+        ExchangeRequest::factory()->create([
+            'sender_id' => $student->id,
+            'receiver_id' => $receiver->id,
+            'sender_user_skill_id' => $userSkill->id,
+            'receiver_user_skill_id' => $receiverSkill->id,
+        ]);
+        $skill->delete();
+
+        $this->actingAs($student)->get(route('user-skills.index', ['type' => 'offered']))
+            ->assertOk()
+            ->assertSee('ทักษะประวัติ')
+            ->assertSee('จึงเปลี่ยนทักษะและประเภทไม่ได้ แต่ยังแก้ไขรายละเอียดเพิ่มเติมได้');
+
+        $this->actingAs($student)->put(route('user-skills.update', $userSkill), [
+            'skill_id' => $skill->id,
+            'skill_type' => 'offered',
+            'description' => 'รายละเอียดที่แก้ไขได้',
         ])->assertRedirectToRoute('user-skills.index', ['type' => 'offered']);
 
-        $this->assertDatabaseHas('user_skills', ['id' => $userSkill->id, 'description' => 'แก้ไขรายละเอียดแล้ว']);
+        $this->assertDatabaseHas('user_skills', [
+            'id' => $userSkill->id,
+            'skill_id' => $skill->id,
+            'skill_type' => 'offered',
+            'description' => 'รายละเอียดที่แก้ไขได้',
+        ]);
     }
 
     public function test_student_can_delete_own_skill(): void

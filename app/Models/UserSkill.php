@@ -11,6 +11,10 @@ class UserSkill extends Model
     /** @use HasFactory<UserSkillFactory> */
     use HasFactory;
 
+    public const REFERENCED_SKILL_LOCKED_MESSAGE = 'ไม่สามารถเปลี่ยนทักษะได้ เนื่องจากรายการนี้ถูกใช้ในคำขอแลกเปลี่ยนหรือประวัติแล้ว';
+
+    public const REFERENCED_TYPE_LOCKED_MESSAGE = 'ไม่สามารถเปลี่ยนประเภททักษะได้ เนื่องจากรายการนี้ถูกใช้ในคำขอแลกเปลี่ยนหรือประวัติแล้ว';
+
     protected $fillable = ['user_id', 'skill_id', 'skill_type', 'description'];
 
     public function user()
@@ -36,5 +40,10 @@ class UserSkill extends Model
     public function receivedExchangeRequests()
     {
         return $this->hasMany(ExchangeRequest::class, 'receiver_user_skill_id');
+    }
+
+    public function isReferencedByExchangeRequest(): bool
+    {
+        return $this->sentExchangeRequests()->exists() || $this->receivedExchangeRequests()->exists();
     }
 }

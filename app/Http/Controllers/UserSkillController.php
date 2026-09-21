@@ -26,7 +26,12 @@ class UserSkillController extends Controller
         return view('user-skills.index', [
             'activeSkillType' => $skillType,
             'availableSkills' => Skill::query()->where('is_active', true)->orderBy('name')->get(),
-            'userSkills' => $request->user()->userSkills()->with('skill')->where('skill_type', $skillType)->latest()->get(),
+            'userSkills' => $request->user()->userSkills()
+                ->with(['skill', 'historicalSkill'])
+                ->withExists(['sentExchangeRequests', 'receivedExchangeRequests'])
+                ->where('skill_type', $skillType)
+                ->latest()
+                ->get(),
             'dashboardRoute' => route('student.dashboard'),
             'dashboardRouteName' => 'student.dashboard',
             'roleLabel' => 'พื้นที่นักศึกษา',
@@ -41,12 +46,12 @@ class UserSkillController extends Controller
             ->with('success', 'เพิ่มทักษะเรียบร้อยแล้ว');
     }
 
-    public function update(UpdateUserSkillRequest $request, UserSkill $userSkill): RedirectResponse
+    public function update(UpdateUserSkillRequest $request, UserSkill $userSkill, UserSkillService $service): RedirectResponse
     {
         Gate::authorize('update', $userSkill);
 
         try {
-            $userSkill->update($request->validated());
+            $service->update($userSkill, $request->validated());
         } catch (UniqueConstraintViolationException) {
             return back()->withInput()->withErrors(['skill_id' => 'คุณเพิ่มทักษะนี้ในประเภทที่เลือกไว้แล้ว']);
         }

@@ -32,6 +32,35 @@ class UserSkillService
         }, 3);
     }
 
+    public function update(UserSkill $userSkill, array $data): UserSkill
+    {
+        return DB::transaction(function () use ($userSkill, $data): UserSkill {
+            /** @var UserSkill $lockedUserSkill */
+            $lockedUserSkill = UserSkill::query()->lockForUpdate()->findOrFail($userSkill->id);
+            $skillChanged = (int) $data['skill_id'] !== $lockedUserSkill->skill_id;
+            $typeChanged = $data['skill_type'] !== $lockedUserSkill->skill_type;
+
+            // ล็อกความหมายของทักษะเดิมเมื่อมีคำขออ้างอิง และตรวจซ้ำภายใน transaction เพื่อกัน race
+            if (($skillChanged || $typeChanged) && $lockedUserSkill->isReferencedByExchangeRequest()) {
+                $errors = [];
+
+                if ($skillChanged) {
+                    $errors['skill_id'] = UserSkill::REFERENCED_SKILL_LOCKED_MESSAGE;
+                }
+
+                if ($typeChanged) {
+                    $errors['skill_type'] = UserSkill::REFERENCED_TYPE_LOCKED_MESSAGE;
+                }
+
+                throw ValidationException::withMessages($errors);
+            }
+
+            $lockedUserSkill->update($data);
+
+            return $lockedUserSkill->refresh();
+        });
+    }
+
     private function existingSkill(int $skillId): Skill
     {
         $skill = Skill::query()->whereKey($skillId)->where('is_active', true)->lockForUpdate()->first();

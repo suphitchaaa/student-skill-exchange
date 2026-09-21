@@ -73,6 +73,7 @@
             <section class="campus-card bg-white skill-panel">
                 <h2 class="h5 mb-3">รายการทักษะ</h2>
                 @forelse ($userSkills as $userSkill)
+                    @php($isReferenced = $userSkill->sent_exchange_requests_exists || $userSkill->received_exchange_requests_exists)
                     <article class="skill-entry">
                         <form action="{{ route('user-skills.update', $userSkill) }}" method="POST">
                             @csrf
@@ -80,19 +81,36 @@
                             <div class="row g-3 align-items-end">
                                 <div class="col-12 col-md-6">
                                     <label class="form-label" for="skill_id_{{ $userSkill->id }}">ทักษะ</label>
-                                    <select class="form-select" id="skill_id_{{ $userSkill->id }}" name="skill_id" required>
-                                        @foreach ($availableSkills as $skill)
-                                            <option value="{{ $skill->id }}" @selected($userSkill->skill_id === $skill->id)>{{ $skill->name }}{{ $skill->category ? ' ('.$skill->category.')' : '' }}</option>
-                                        @endforeach
-                                    </select>
+                                    @if ($isReferenced)
+                                        <input name="skill_id" type="hidden" value="{{ $userSkill->skill_id }}">
+                                        <input class="form-control" id="skill_id_{{ $userSkill->id }}" value="{{ $userSkill->historicalSkill?->name ?? 'ไม่พบทักษะ' }}" readonly>
+                                    @else
+                                        <select class="form-select @error('skill_id') is-invalid @enderror" id="skill_id_{{ $userSkill->id }}" name="skill_id" required>
+                                            @foreach ($availableSkills as $skill)
+                                                <option value="{{ $skill->id }}" @selected($userSkill->skill_id === $skill->id)>{{ $skill->name }}{{ $skill->category ? ' ('.$skill->category.')' : '' }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                    @error('skill_id') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label class="form-label" for="skill_type_{{ $userSkill->id }}">ประเภท</label>
-                                    <select class="form-select" id="skill_type_{{ $userSkill->id }}" name="skill_type" required>
-                                        <option value="offered" @selected($userSkill->skill_type === 'offered')>ทักษะที่สอนได้</option>
-                                        <option value="wanted" @selected($userSkill->skill_type === 'wanted')>ทักษะที่ต้องการเรียน</option>
-                                    </select>
+                                    @if ($isReferenced)
+                                        <input name="skill_type" type="hidden" value="{{ $userSkill->skill_type }}">
+                                        <input class="form-control" id="skill_type_{{ $userSkill->id }}" value="{{ $userSkill->skill_type === 'offered' ? 'ทักษะที่สอนได้' : 'ทักษะที่ต้องการเรียน' }}" readonly>
+                                    @else
+                                        <select class="form-select @error('skill_type') is-invalid @enderror" id="skill_type_{{ $userSkill->id }}" name="skill_type" required>
+                                            <option value="offered" @selected($userSkill->skill_type === 'offered')>ทักษะที่สอนได้</option>
+                                            <option value="wanted" @selected($userSkill->skill_type === 'wanted')>ทักษะที่ต้องการเรียน</option>
+                                        </select>
+                                    @endif
+                                    @error('skill_type') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
+                                @if ($isReferenced)
+                                    <div class="col-12">
+                                        <p class="form-text mb-0">รายการนี้ถูกใช้ในคำขอแลกเปลี่ยนหรือประวัติแล้ว จึงเปลี่ยนทักษะและประเภทไม่ได้ แต่ยังแก้ไขรายละเอียดเพิ่มเติมได้</p>
+                                    </div>
+                                @endif
                                 <div class="col-12">
                                     <label class="form-label" for="description_{{ $userSkill->id }}">รายละเอียดเพิ่มเติม</label>
                                     <textarea class="form-control" id="description_{{ $userSkill->id }}" name="description" rows="2">{{ $userSkill->description }}</textarea>

@@ -10,13 +10,39 @@ class UpdateUserSkillRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->role === 'student';
+        $userSkill = $this->route('userSkill');
+
+        return $userSkill instanceof UserSkill
+            && ($this->user()?->can('update', $userSkill) ?? false);
     }
 
     public function rules(): array
     {
         /** @var UserSkill $userSkill */
         $userSkill = $this->route('userSkill');
+
+        if ($userSkill->isReferencedByExchangeRequest()) {
+            return [
+                'skill_id' => [
+                    'required',
+                    'integer',
+                    function (string $attribute, mixed $value, $fail) use ($userSkill): void {
+                        if ((int) $value !== $userSkill->skill_id) {
+                            $fail(UserSkill::REFERENCED_SKILL_LOCKED_MESSAGE);
+                        }
+                    },
+                ],
+                'skill_type' => [
+                    'required',
+                    function (string $attribute, mixed $value, $fail) use ($userSkill): void {
+                        if ($value !== $userSkill->skill_type) {
+                            $fail(UserSkill::REFERENCED_TYPE_LOCKED_MESSAGE);
+                        }
+                    },
+                ],
+                'description' => ['nullable', 'string'],
+            ];
+        }
 
         return [
             'skill_id' => [
