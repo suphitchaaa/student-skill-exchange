@@ -51,6 +51,24 @@ class StudentManagementTest extends TestCase
             ->assertDontSee('Admin Match');
     }
 
+    public function test_admin_can_view_student_detail_with_normal_and_soft_deleted_skills(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $student = User::factory()->create(['role' => 'student']);
+        $normalSkill = Skill::factory()->create(['name' => 'ทักษะปกติ']);
+        $deletedSkill = Skill::factory()->create(['name' => 'ทักษะที่ถูกลบ']);
+
+        $student->userSkills()->create(['skill_id' => $normalSkill->id, 'skill_type' => 'offered']);
+        $student->userSkills()->create(['skill_id' => $deletedSkill->id, 'skill_type' => 'wanted']);
+        $deletedSkill->delete();
+
+        $this->actingAs($admin)
+            ->get(route('admin.students.show', $student))
+            ->assertOk()
+            ->assertSee('ทักษะปกติ')
+            ->assertSee('ทักษะที่ถูกลบ');
+    }
+
     public function test_admin_can_suspend_student(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);

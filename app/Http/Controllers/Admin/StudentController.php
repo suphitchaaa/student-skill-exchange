@@ -42,7 +42,7 @@ class StudentController extends Controller
     public function show(User $user): View
     {
         $this->ensureStudent($user);
-        $user->load(['studentProfile', 'userSkills.skill']);
+        $user->load(['studentProfile', 'userSkills.historicalSkill']);
 
         return view('admin.students.show', [
             'student' => $user,

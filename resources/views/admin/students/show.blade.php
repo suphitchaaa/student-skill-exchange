@@ -48,7 +48,7 @@
             <section class="campus-card bg-white p-3">
                 <h2 class="h6 mb-3">ทักษะของนักศึกษา</h2>
                 @forelse ($student->userSkills as $userSkill)
-                    <span class="badge text-bg-light border me-1 mb-1">{{ $userSkill->skill->name }} · {{ $userSkill->skill_type === 'offered' ? 'เสนอ' : 'ต้องการ' }}</span>
+                    <span class="badge text-bg-light border me-1 mb-1">{{ $userSkill->historicalSkill?->name ?? 'ไม่พบทักษะ' }} · {{ $userSkill->skill_type === 'offered' ? 'เสนอ' : 'ต้องการ' }}</span>
                 @empty
                     <p class="text-secondary mb-0">ยังไม่มีทักษะ</p>
                 @endforelse
