@@ -51,6 +51,13 @@
                     @forelse ($student->userSkills->where('skill_type', $type) as $userSkill)
                         <div class="border-bottom py-3 last-border-0">
                             <h3 class="h6 mb-1">{{ $userSkill->skill?->name }}</h3>
+
+                            @if ($type === 'offered' && isset($matchedOfferedSkillIds[$userSkill->skill_id]))
+                                <span class="badge text-bg-light border mb-2">ทักษะนี้ตรงกับสิ่งที่คุณกำลังมองหา</span>
+                            @elseif ($type === 'wanted' && isset($matchedWantedSkillIds[$userSkill->skill_id]))
+                                <span class="badge text-bg-light border mb-2">เขากำลังมองหาทักษะที่คุณมี</span>
+                            @endif
+
                             @if ($userSkill->description)
                                 <p class="small text-secondary mb-0">{{ $userSkill->description }}</p>
                             @endif

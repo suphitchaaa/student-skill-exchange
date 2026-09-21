@@ -47,14 +47,24 @@
                     <button class="btn btn-primary" type="submit">ค้นหา</button>
                 </div>
             </div>
+
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="recommended" name="recommended" value="1" @checked($recommended)>
+                <label class="form-check-label" for="recommended">แนะนำสำหรับฉัน</label>
+            </div>
         </form>
     </section>
 
     @if ($students->isEmpty())
         <section class="campus-card bg-white content-empty-state text-center">
             <i class="bi bi-person-x fs-2 text-secondary" aria-hidden="true"></i>
-            <h2 class="h5 mt-3">ไม่พบนักศึกษาตามเงื่อนไข</h2>
-            <p class="text-secondary">ลองเปลี่ยนคำค้นหาหรือรีเซ็ตตัวกรองเพื่อดูนักศึกษาทั้งหมด</p>
+            @if ($recommended)
+                <h2 class="h5 mt-3">ยังไม่พบคนที่แนะนำสำหรับคุณ</h2>
+                <p class="text-secondary">ลองปรับทักษะที่ต้องการเรียนหรือเปลี่ยนตัวกรอง</p>
+            @else
+                <h2 class="h5 mt-3">ไม่พบนักศึกษาตามเงื่อนไข</h2>
+                <p class="text-secondary">ลองเปลี่ยนคำค้นหาหรือรีเซ็ตตัวกรองเพื่อดูนักศึกษาทั้งหมด</p>
+            @endif
             <a class="btn btn-outline-primary" href="{{ route('students.index') }}">ล้างตัวกรอง</a>
         </section>
     @else
