@@ -47,7 +47,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <label class="form-label" for="preferred_schedule">ช่วงเวลาที่สะดวก</label>
-                <input class="form-control @error('preferred_schedule') is-invalid @enderror" id="preferred_schedule" name="preferred_schedule" value="{{ old('preferred_schedule') }}" required>
+                <input class="form-control @error('preferred_schedule') is-invalid @enderror" id="preferred_schedule" name="preferred_schedule" maxlength="255" value="{{ old('preferred_schedule') }}" required>
                 @error('preferred_schedule') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
             <div class="col-12">

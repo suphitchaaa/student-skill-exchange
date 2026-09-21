@@ -24,12 +24,12 @@
                 <div class="row g-3">
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="faculty">คณะ</label>
-                        <input class="form-control @error('faculty') is-invalid @enderror" id="faculty" name="faculty" value="{{ old('faculty', $profile->faculty) }}">
+                        <input class="form-control @error('faculty') is-invalid @enderror" id="faculty" name="faculty" maxlength="255" value="{{ old('faculty', $profile->faculty) }}">
                         @error('faculty') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="major">สาขาวิชา</label>
-                        <input class="form-control @error('major') is-invalid @enderror" id="major" name="major" value="{{ old('major', $profile->major) }}">
+                        <input class="form-control @error('major') is-invalid @enderror" id="major" name="major" maxlength="255" value="{{ old('major', $profile->major) }}">
                         @error('major') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-12 col-md-6">
@@ -39,12 +39,12 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="phone">เบอร์โทรศัพท์</label>
-                        <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $profile->phone) }}">
+                        <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" maxlength="255" value="{{ old('phone', $profile->phone) }}">
                         @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-12">
                         <label class="form-label" for="contact_channel">ช่องทางติดต่อ</label>
-                        <input class="form-control @error('contact_channel') is-invalid @enderror" id="contact_channel" name="contact_channel" value="{{ old('contact_channel', $profile->contact_channel) }}">
+                        <input class="form-control @error('contact_channel') is-invalid @enderror" id="contact_channel" name="contact_channel" maxlength="255" value="{{ old('contact_channel', $profile->contact_channel) }}">
                         @error('contact_channel') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-12">

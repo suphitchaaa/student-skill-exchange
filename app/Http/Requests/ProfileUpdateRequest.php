@@ -14,12 +14,12 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'faculty' => ['nullable', 'string'],
-            'major' => ['nullable', 'string'],
+            'faculty' => ['nullable', 'string', 'max:255'],
+            'major' => ['nullable', 'string', 'max:255'],
             'year_level' => ['nullable', 'integer', 'between:1,8'],
             'bio' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string'],
-            'contact_channel' => ['nullable', 'string'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'contact_channel' => ['nullable', 'string', 'max:255'],
         ];
     }
 
@@ -32,6 +32,16 @@ class ProfileUpdateRequest extends FormRequest
             'bio' => 'แนะนำตัว',
             'phone' => 'เบอร์โทรศัพท์',
             'contact_channel' => 'ช่องทางติดต่อ',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'faculty.max' => 'คณะต้องไม่เกิน 255 ตัวอักษร',
+            'major.max' => 'สาขาวิชาต้องไม่เกิน 255 ตัวอักษร',
+            'phone.max' => 'เบอร์โทรศัพท์ต้องไม่เกิน 255 ตัวอักษร',
+            'contact_channel.max' => 'ช่องทางติดต่อต้องไม่เกิน 255 ตัวอักษร',
         ];
     }
 }

@@ -18,7 +18,7 @@ class StoreExchangeRequest extends FormRequest
             'sender_user_skill_id' => ['required', 'integer'],
             'receiver_user_skill_id' => ['required', 'integer'],
             'learning_format' => ['required', Rule::in(['online', 'onsite', 'either'])],
-            'preferred_schedule' => ['required', 'string'],
+            'preferred_schedule' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string'],
         ];
     }
@@ -31,6 +31,13 @@ class StoreExchangeRequest extends FormRequest
             'learning_format' => 'รูปแบบการเรียนรู้',
             'preferred_schedule' => 'ช่วงเวลาที่สะดวก',
             'message' => 'ข้อความ',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'preferred_schedule.max' => 'ช่วงเวลาที่สะดวกต้องไม่เกิน 255 ตัวอักษร',
         ];
     }
 }

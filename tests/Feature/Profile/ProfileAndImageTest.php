@@ -65,6 +65,55 @@ class ProfileAndImageTest extends TestCase
         $this->assertDatabaseHas('student_profiles', ['id' => $profile->id, 'faculty' => null, 'year_level' => null]);
     }
 
+    public function test_profile_varchar_fields_accept_255_characters(): void
+    {
+        [$user, $profile] = $this->studentWithProfile();
+        $boundaryValue = str_repeat('a', 255);
+
+        $this->actingAs($user)->put(route('profile.update'), [
+            'faculty' => $boundaryValue,
+            'major' => $boundaryValue,
+            'phone' => $boundaryValue,
+            'contact_channel' => $boundaryValue,
+        ])->assertRedirectToRoute('profile.show')
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('student_profiles', [
+            'id' => $profile->id,
+            'faculty' => $boundaryValue,
+            'major' => $boundaryValue,
+            'phone' => $boundaryValue,
+            'contact_channel' => $boundaryValue,
+        ]);
+    }
+
+    public function test_profile_varchar_fields_reject_256_characters_before_database_update(): void
+    {
+        [$user, $profile] = $this->studentWithProfile();
+        $profile->update([
+            'faculty' => 'original faculty',
+            'major' => 'original major',
+            'phone' => 'original phone',
+            'contact_channel' => 'original contact',
+        ]);
+        $tooLongValue = str_repeat('a', 256);
+
+        $this->actingAs($user)->put(route('profile.update'), [
+            'faculty' => $tooLongValue,
+            'major' => $tooLongValue,
+            'phone' => $tooLongValue,
+            'contact_channel' => $tooLongValue,
+        ])->assertSessionHasErrors(['faculty', 'major', 'phone', 'contact_channel']);
+
+        $this->assertDatabaseHas('student_profiles', [
+            'id' => $profile->id,
+            'faculty' => 'original faculty',
+            'major' => 'original major',
+            'phone' => 'original phone',
+            'contact_channel' => 'original contact',
+        ]);
+    }
+
     public function test_year_level_must_be_between_one_and_eight(): void
     {
         [$user] = $this->studentWithProfile();

@@ -42,6 +42,36 @@ class ExchangeRequestCreationAndListingTest extends TestCase
             ->assertSessionHasErrors('learning_format');
     }
 
+    public function test_preferred_schedule_accepts_255_characters(): void
+    {
+        [$sender, $receiver, $senderSkill, $receiverSkill] = $this->exchangePair();
+        $boundaryValue = str_repeat('a', 255);
+
+        $this->actingAs($sender)->post(
+            route('exchange-requests.store', $receiver),
+            $this->payload($senderSkill, $receiverSkill, ['preferred_schedule' => $boundaryValue]),
+        )->assertRedirectToRoute('exchange-requests.index', ['tab' => 'sent'])
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('exchange_requests', [
+            'sender_id' => $sender->id,
+            'receiver_id' => $receiver->id,
+            'preferred_schedule' => $boundaryValue,
+        ]);
+    }
+
+    public function test_preferred_schedule_rejects_256_characters_before_database_insert(): void
+    {
+        [$sender, $receiver, $senderSkill, $receiverSkill] = $this->exchangePair();
+
+        $this->actingAs($sender)->post(
+            route('exchange-requests.store', $receiver),
+            $this->payload($senderSkill, $receiverSkill, ['preferred_schedule' => str_repeat('a', 256)]),
+        )->assertSessionHasErrors('preferred_schedule');
+
+        $this->assertDatabaseCount('exchange_requests', 0);
+    }
+
     public function test_student_cannot_send_a_request_to_self(): void
     {
         $student = $this->student('นักศึกษาผู้ส่ง');
